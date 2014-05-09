@@ -11,30 +11,32 @@
 #include <time.h>
 #include <vector>
 #include "Stopwatch.h"
+#include "Display.h"
 
 class Calculations {
 public:
 	Calculations();
 	virtual ~Calculations();
-	void calcCurrentSpeed(double wheelCirc, double timePassed);
-	void calcAverageSpeed();
-	void calcTripDistance(double wheelCirc);
 	void startTripTimer();
 	void stopTripTimer();
 	TIME getTime();
-	void resetAll();
 	void resetTrip();
-	void updateDisplay();
+	void runCalculations(double wheelCirc, TIME timePassed);
 
 private:
 	double roundWhole(double num);
 	double roundTenth(double num);
+	void calcCurrentSpeed(double wheelCirc, TIME timePassed);
+	void calcAverageSpeed();
+	void calcTripDistance(double wheelCirc);
+	void updateDisplay();
 	Stopwatch stopwatch;
 	double currentSpeed;
 	double averageSpeed;
 	double tripDistance;
 	double startTime;
 	double endTime;
+	Display display;
 	time_t tripTime;
 	std::vector<double> speeds;
 };
