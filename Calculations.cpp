@@ -7,70 +7,83 @@
 
 #include "Calculations.h"
 #include <string>
+#include <math.h>
 
 Calculations::Calculations() {
 	currentSpeed = 0.0;
 	averageSpeed = 0.0;
 	tripDistance = 0.0;
-	totalDistance = 0.0;
-
 }
 
 Calculations::~Calculations() {
 	// TODO Auto-generated destructor stub
 }
 
-int Calculations::roundWhole(double num){
-	if((num + .5) >= ((int)num + 1)){
-		return (int)num + 1;
-	}
-
-	else{
-		return (int)num;
-	}
+double Calculations::roundWhole(double num){
+	//return round(num);
+	return 0.0;
 }
 
 double Calculations::roundTenth(double num){
-	string numString = std::to_string(num);
-	string rounded;
-
-	if(std::stoi(numString.at(3), 10) > 5){
-
-	}
+	return double(int(num * 10 + 0.5))/10;
 }
 
 void Calculations::calcCurrentSpeed(double wheelCirc, double timePassed){
 	currentSpeed = (wheelCirc/100000) * (3600/timePassed);
 
-	if(currentSpeed > 10){
+	if(currentSpeed >= 10){
 		currentSpeed = roundWhole(currentSpeed);
 	}
+
+	else if(currentSpeed >= 1 && currentSpeed < 10){
+		currentSpeed = roundTenth(currentSpeed);
+	}
+
+	else{
+		currentSpeed = 0.0;
+	}
+
+	speeds.push_back(currentSpeed);
 }
 
 void Calculations::calcAverageSpeed(){
-	//TODO Fill in calculation
+	double total = 0.0;
+	double numSpeeds = 0.0;
+	for(std::vector<double>::iterator iter = speeds.begin(); iter != speeds.end(); ++iter){
+		numSpeeds++;
+		total = total + (double)*iter;
+	}
+
+	averageSpeed = total/numSpeeds;
 }
 
 void Calculations::calcTripDistance(double wheelCirc){
-	//TODO Fill in calculation
+	tripDistance = tripDistance + wheelCirc;
 }
 
-void Calculations::calcTotalDistance(double wheelCirc){
-	//TODO Fill in calculation
+void Calculations::startTripTimer(){
+	stopwatch.start();
 }
 
-bool Calculations::startTotalTimer(){
-	return false;
+void Calculations::stopTripTimer(){
+	stopwatch.stop();
 }
 
-bool Calculations::stopTotalTimer(){
-	return false;
+TIME Calculations::getTime(){
+	return stopwatch.getTimeElapsed();
 }
 
-bool Calculations::startTripTimer(){
-	return false;
+void Calculations::resetTrip(){
+	tripDistance = 0.0;
+	currentSpeed = 0.0;
+	averageSpeed = 0.0;
+	tripTime = 0.0;
+	stopwatch.reset();
 }
 
-bool Calculations::stopTripTimer(){
-	return false;
+void Calculations::resetAll(){
+	tripDistance = 0.0;
+	currentSpeed = 0.0;
+	averageSpeed = 0.0;
+	tripTime = 0.0;
 }

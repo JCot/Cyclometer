@@ -10,6 +10,7 @@
 
 #include <time.h>
 #include <vector>
+#include "Stopwatch.h"
 
 class Calculations {
 public:
@@ -18,23 +19,24 @@ public:
 	void calcCurrentSpeed(double wheelCirc, double timePassed);
 	void calcAverageSpeed();
 	void calcTripDistance(double wheelCirc);
-	void calcTotalDistance(double wheelCirc);
-	bool startTotalTimer();
-	bool stopTotalTimer();
-	bool startTripTimer();
-	bool stopTripTimer();
-	bool reset();
+	void startTripTimer();
+	void stopTripTimer();
+	TIME getTime();
+	void resetAll();
+	void resetTrip();
+	void updateDisplay();
 
 private:
-	int roundWhole(double num);
+	double roundWhole(double num);
 	double roundTenth(double num);
+	Stopwatch stopwatch;
 	double currentSpeed;
 	double averageSpeed;
 	double tripDistance;
-	double totalDistance;
+	double startTime;
+	double endTime;
 	time_t tripTime;
-	time_t totalTime;
-	std::vector<int> speeds;
+	std::vector<double> speeds;
 };
 
 #endif /* CALCULATIONS_H_ */
