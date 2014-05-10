@@ -24,48 +24,84 @@ int secondDigit = 5;
 int thirdDigit = 3;
 int fourthDigit = 0;
 
-int firstDigitSignals;
-int secondDigitSignals;
-int thirdDigitSignals;
-int fourthDigitSignals;
+int * firstDigitSignals;
+int * secondDigitSignals;
+int * thirdDigitSignals;
+int * fourthDigitSignals;
 
-void Display::getDigitSignals(int digit, int position, bool decimal){
-	//TODO either make position a pointer or develop logic to know which of
-	//     the DigitSignals variable to assign to.
+void Display::getDigitSignals(int digit, int * position, bool decimal){
 	if(decimal){
 		switch(digit){
 		case 0:
-			position = ZERO_NO_DECIMAL;
+			*position = ZERO_NO_DECIMAL;
 			break;
 		case 1:
-			position = ONE_NO_DECIMAL;
+			*position = ONE_NO_DECIMAL;
 			break;
 		case 2:
-			position = TWO_NO_DECIMAL;
+			*position = TWO_NO_DECIMAL;
 			break;
 		case 3:
-			position = THREE_NO_DECIMAL;
+			*position = THREE_NO_DECIMAL;
 			break;
 		case 4:
-			position = FOUR_NO_DECIMAL;
+			*position = FOUR_NO_DECIMAL;
 			break;
 		case 5:
-			position = FIVE_NO_DECIMAL;
+			*position = FIVE_NO_DECIMAL;
 			break;
 		case 6:
-			position = SIX_NO_DECIMAL;
+			*position = SIX_NO_DECIMAL;
 			break;
 		case 7:
-			position = SEVEN_NO_DECIMAL;
+			*position = SEVEN_NO_DECIMAL;
 			break;
 		case 8:
-			position = EIGHT_NO_DECIMAL;
+			*position = EIGHT_NO_DECIMAL;
 			break;
 		case 9:
-			position = NINE_NO_DECIMAL;
+			*position = NINE_NO_DECIMAL;
 			break;
 		default:
-			position = NOTHING;
+			*position = NOTHING;
+			break;
+		}
+	}
+
+	else{
+		switch(digit){
+		case 0:
+			*position = ZERO_DECIMAL;
+			break;
+		case 1:
+			*position = ONE_DECIMAL;
+			break;
+		case 2:
+			*position = TWO_DECIMAL;
+			break;
+		case 3:
+			*position = THREE_DECIMAL;
+			break;
+		case 4:
+			*position = FOUR_DECIMAL;
+			break;
+		case 5:
+			*position = FIVE_DECIMAL;
+			break;
+		case 6:
+			*position = SIX_DECIMAL;
+			break;
+		case 7:
+			*position = SEVEN_DECIMAL;
+			break;
+		case 8:
+			*position = EIGHT_DECIMAL;
+			break;
+		case 9:
+			*position = NINE_DECIMAL;
+			break;
+		default:
+			*position = NOTHING;
 			break;
 		}
 	}
@@ -108,26 +144,26 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 
 	if(currentSpeed >= 10){
 		firstDigit = (int)(currentSpeed/10);
-		secondDigit = (int)(currentSpeed % 10.0);
+		secondDigit = ((int)currentSpeed % 10);
 		csDecimalPosition = -1;
 	}
 
 	else if(currentSpeed >= 0 && currentSpeed < 10){
 		firstDigit = (int)currentSpeed;
-		secondDigit = (int)((currentSpeed * 10) % 10);
+		secondDigit = ((int)(currentSpeed * 10)) % 10;
 		csDecimalPosition = 3;
 	}
 
 	if(averageSpeed >= 10){
 		thirdDigit = (int)(averageSpeed/10);
-		fourthDigit = (int)(averageSpeed % 10);
+		fourthDigit = ((int)averageSpeed % 10);
 		asDecimalPosition = -1;
 	}
 
 	else if(averageSpeed >= 0 && averageSpeed < 10){
 		thirdDigit = (int)averageSpeed;
-		fourthDigit = (averageSpeed * 10) % 10;
-		asDdecimalPosition = 1;
+		fourthDigit = ((int)(averageSpeed * 10)) % 10;
+		asDecimalPosition = 1;
 	}
 
 	updateDisplay(csDecimalPosition, asDecimalPosition);
@@ -146,21 +182,21 @@ void Display::displayDistance(double distance){
 		firstDigit = -1;
 		secondDigit = -1;
 		thirdDigit = (int)(distance);
-		fourthDigit = (int)((distance * 10) % 10);
+		fourthDigit = ((int)(distance * 10) % 10);
 	}
 
 	else if(distance >= 10 && distance < 100){
 		firstDigit = -1;
 		secondDigit = (int)(distance/10);
-		thirdDigit = (int)(distance % 10);
-		fourthDigit = (int)((distance * 10) % 10);
+		thirdDigit = (int)distance % 10;
+		fourthDigit = (int)(distance * 10) % 10;
 	}
 
 	else if(distance >= 100){
 		firstDigit = (int)(distance/100);
-		secondDigit = (int)(distance);
-		thirdDigit = (int)(distance % 10);
-		fourthDigit = (int)((distance * 10) % 10);
+		secondDigit = (int)(distance); //TODO make this correct
+		thirdDigit = (int)distance % 10;
+		fourthDigit = (int)(distance * 10) % 10;
 	}
 
 	updateDisplay(1, -1);
@@ -197,9 +233,9 @@ void Display::displayTime(TIME time){
 //decimalPositionOne, decimalPositionTwo - which decimal points
 //need to be turned on, number corresponds to which anode it is on
 void Display::updateDisplay(int decimalPositionOne, int decimalPositionTwo){
-	getDigitSignals(firstDigit, firstDigitSignals);
-	getDigitSignals(secondDigit, secondDigitSignals);
-	getDigitSignals(thirdDigit, thirdDigitSignals);
-	getDigitSignals(fourthDigit, fourthDigitSignals);
+	getDigitSignals(firstDigit, firstDigitSignals, false);
+	getDigitSignals(secondDigit, secondDigitSignals, false);
+	getDigitSignals(thirdDigit, thirdDigitSignals, false);
+	getDigitSignals(fourthDigit, fourthDigitSignals, false);
 	//TODO magical bullshit to make display the digits fast enough
 }
