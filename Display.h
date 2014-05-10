@@ -25,8 +25,8 @@ private:
 	uintptr_t portAHandle;
 	uintptr_t portBHandle;
 	uintptr_t directionHandle;
-	void getDigitSignals(int digit, int position, bool decimal);
-	void updateDisplay(int decimalPositionOne, int decimalPositionTwo);
+	void getDigitSignals(int digit, int * position, bool decimal);
+	void updateDisplay();
 	const static int NOTHING = 0xFF;
 	const static int ZERO_NO_DECIMAL = 0x03;
 	const static int ZERO_DECIMAL = 0x02;

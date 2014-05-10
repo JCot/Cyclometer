@@ -8,6 +8,7 @@
 #include "Calculations.h"
 #include <string>
 #include <math.h>
+#include <iostream>
 
 using namespace std;
 
@@ -31,7 +32,7 @@ double Calculations::roundTenth(double num){
 }
 
 void Calculations::calcCurrentSpeed(double wheelCirc, TIME timePassed){
-	double tempTime = timePassed.sec + (timePassed.min * 60);
+	int tempTime = timePassed.sec + (timePassed.min * 60);
 	currentSpeed = (wheelCirc/100000) * (3600/tempTime);
 
 	if(currentSpeed >= 10){
@@ -46,6 +47,8 @@ void Calculations::calcCurrentSpeed(double wheelCirc, TIME timePassed){
 		currentSpeed = 0.0;
 	}
 
+	cout << "Current Speed: " << currentSpeed << "\n";
+
 	speeds.push_back(currentSpeed);
 }
 
@@ -58,6 +61,20 @@ void Calculations::calcAverageSpeed(){
 	}
 
 	averageSpeed = total/numSpeeds;
+
+	if(averageSpeed >= 10){
+		averageSpeed = roundWhole(averageSpeed);
+	}
+
+	else if(averageSpeed >= 1 && averageSpeed < 10){
+		averageSpeed = roundTenth(averageSpeed);
+	}
+
+	else{
+		averageSpeed = 0.0;
+	}
+
+	cout << "Average Speed: " << averageSpeed << "\n";
 }
 
 void Calculations::calcTripDistance(double wheelCirc){

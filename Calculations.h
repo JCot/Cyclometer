@@ -23,12 +23,15 @@ public:
 	void resetTrip();
 	void runCalculations(double wheelCirc, TIME timePassed);
 
-private:
-	double roundWhole(double num);
-	double roundTenth(double num);
+	//Move to private once testing complete
 	void calcCurrentSpeed(double wheelCirc, TIME timePassed);
 	void calcAverageSpeed();
 	void calcTripDistance(double wheelCirc);
+
+private:
+	double roundWhole(double num);
+	double roundTenth(double num);
+
 	void updateDisplay();
 	Stopwatch stopwatch;
 	double currentSpeed;

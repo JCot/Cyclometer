@@ -139,34 +139,62 @@ Display::~Display() {
 }
 
 void Display::displaySpeeds(double currentSpeed, double averageSpeed){
-	int csDecimalPosition = -1;
-	int asDecimalPosition = -1;
+	bool csDecimal = false;
+	bool asDecimal = false;
 
 	if(currentSpeed >= 10){
 		firstDigit = (int)(currentSpeed/10);
 		secondDigit = ((int)currentSpeed % 10);
-		csDecimalPosition = -1;
+		csDecimal = false;
 	}
 
 	else if(currentSpeed >= 0 && currentSpeed < 10){
 		firstDigit = (int)currentSpeed;
 		secondDigit = ((int)(currentSpeed * 10)) % 10;
-		csDecimalPosition = 3;
+		csDecimal = true;
 	}
 
 	if(averageSpeed >= 10){
 		thirdDigit = (int)(averageSpeed/10);
 		fourthDigit = ((int)averageSpeed % 10);
-		asDecimalPosition = -1;
+		asDecimal = false;
 	}
 
 	else if(averageSpeed >= 0 && averageSpeed < 10){
 		thirdDigit = (int)averageSpeed;
 		fourthDigit = ((int)(averageSpeed * 10)) % 10;
-		asDecimalPosition = 1;
+		asDecimal = true;
 	}
 
-	updateDisplay(csDecimalPosition, asDecimalPosition);
+	if(csDecimal && !asDecimal){
+		getDigitSignals(firstDigit, firstDigitSignals, true);
+		getDigitSignals(secondDigit, secondDigitSignals, false);
+		getDigitSignals(thirdDigit, thirdDigitSignals, false);
+		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	}
+
+	else if(!csDecimal && asDecimal){
+		getDigitSignals(firstDigit, firstDigitSignals, false);
+		getDigitSignals(secondDigit, secondDigitSignals, false);
+		getDigitSignals(thirdDigit, thirdDigitSignals, true);
+		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	}
+
+	else if(csDecimal && asDecimal){
+		getDigitSignals(firstDigit, firstDigitSignals, true);
+		getDigitSignals(secondDigit, secondDigitSignals, false);
+		getDigitSignals(thirdDigit, thirdDigitSignals, true);
+		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	}
+
+	else{
+		getDigitSignals(firstDigit, firstDigitSignals, false);
+		getDigitSignals(secondDigit, secondDigitSignals, false);
+		getDigitSignals(thirdDigit, thirdDigitSignals, false);
+		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	}
+
+	updateDisplay();
 }
 
 void Display::displayDistance(double distance){
@@ -199,7 +227,12 @@ void Display::displayDistance(double distance){
 		fourthDigit = (int)(distance * 10) % 10;
 	}
 
-	updateDisplay(1, -1);
+	getDigitSignals(firstDigit, firstDigitSignals, false);
+	getDigitSignals(secondDigit, secondDigitSignals, false);
+	getDigitSignals(thirdDigit, thirdDigitSignals, true);
+	getDigitSignals(fourthDigit, fourthDigitSignals, false);
+
+	updateDisplay();
 }
 
 void Display::displayTime(TIME time){
@@ -227,15 +260,14 @@ void Display::displayTime(TIME time){
 		fourthDigit = sec % 10;
 	}
 
-	updateDisplay(2, -1);
-}
-
-//decimalPositionOne, decimalPositionTwo - which decimal points
-//need to be turned on, number corresponds to which anode it is on
-void Display::updateDisplay(int decimalPositionOne, int decimalPositionTwo){
 	getDigitSignals(firstDigit, firstDigitSignals, false);
-	getDigitSignals(secondDigit, secondDigitSignals, false);
+	getDigitSignals(secondDigit, secondDigitSignals, true);
 	getDigitSignals(thirdDigit, thirdDigitSignals, false);
 	getDigitSignals(fourthDigit, fourthDigitSignals, false);
-	//TODO magical bullshit to make display the digits fast enough
+
+	updateDisplay();
+}
+
+void Display::updateDisplay(){
+	//TODO magical bullshit to display the digits fast enough
 }
