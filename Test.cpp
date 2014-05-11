@@ -10,17 +10,16 @@
 #include "Stopwatch.h"
 #include "Display.h"
 #include <iostream>
+#include <unistd.h>
+
+using namespace std;
 
 Calculations calcs = Calculations();
+Display display = Display();
 
-Test::Test() {
-	// TODO Auto-generated constructor stub
+Test::Test() {}
 
-}
-
-Test::~Test() {
-	// TODO Auto-generated destructor stub
-}
+Test::~Test() {}
 
 void testSpeedCalculation(double wheelCirc, TIME timePassed){
 	calcs.calcCurrentSpeed(wheelCirc, timePassed);
@@ -28,6 +27,27 @@ void testSpeedCalculation(double wheelCirc, TIME timePassed){
 
 void testAverageSpeed(){
 	calcs.calcAverageSpeed();
+}
+
+void testTripDistance(double wheelCirc){
+	for(int i = 0; i <= 455; i++){
+		calcs.calcTripDistance(wheelCirc);
+	}
+}
+
+void testTripTimer(){
+	calcs.startTripTimer();
+	sleep(5);
+	TIME time = calcs.getTime();
+	cout << "Min: " << time.min << " Sec: " << time.sec << "\n";
+	cout.flush();
+}
+
+void testDisplay(){
+	TIME time;
+	time.min = 45;
+	time.sec = 23;
+	display.displayTime(time);
 }
 
 int main(int argc, char *argv[]){
@@ -42,6 +62,10 @@ int main(int argc, char *argv[]){
 	testSpeedCalculation(wheel, time1);
 	testSpeedCalculation(wheel, time2);
 	testAverageSpeed();
+	testTripDistance(wheel);
+	testDisplay();
+	testTripTimer();
+	testTripTimer();
 
 	return EXIT_SUCCESS;
 }

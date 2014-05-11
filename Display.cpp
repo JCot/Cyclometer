@@ -12,6 +12,7 @@
 #include <hw/inout.h>
 #include <sys/neutrino.h>
 #include <sys/mman.h>
+#include <iostream>
 
 using namespace std;
 
@@ -24,13 +25,18 @@ int secondDigit = 5;
 int thirdDigit = 3;
 int fourthDigit = 0;
 
-int * firstDigitSignals;
-int * secondDigitSignals;
-int * thirdDigitSignals;
-int * fourthDigitSignals;
+int firstDigitSignals;
+int secondDigitSignals;
+int thirdDigitSignals;
+int fourthDigitSignals;
+
+int * firstSignalsPointer = &firstDigitSignals;
+int * secondSignalsPointer = &secondDigitSignals;
+int * thirdSignalsPointer = &thirdDigitSignals;
+int * fourthSignalsPointer = &fourthDigitSignals;
 
 void Display::getDigitSignals(int digit, int * position, bool decimal){
-	if(decimal){
+	if(!decimal){
 		switch(digit){
 		case 0:
 			*position = ZERO_NO_DECIMAL;
@@ -167,36 +173,37 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 	}
 
 	if(csDecimal && !asDecimal){
-		getDigitSignals(firstDigit, firstDigitSignals, true);
-		getDigitSignals(secondDigit, secondDigitSignals, false);
-		getDigitSignals(thirdDigit, thirdDigitSignals, false);
-		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+		getDigitSignals(firstDigit, firstSignalsPointer, true);
+		getDigitSignals(secondDigit, secondSignalsPointer, false);
+		getDigitSignals(thirdDigit, thirdSignalsPointer, false);
+		getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 	}
 
 	else if(!csDecimal && asDecimal){
-		getDigitSignals(firstDigit, firstDigitSignals, false);
-		getDigitSignals(secondDigit, secondDigitSignals, false);
-		getDigitSignals(thirdDigit, thirdDigitSignals, true);
-		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+		getDigitSignals(firstDigit, firstSignalsPointer, false);
+		getDigitSignals(secondDigit, secondSignalsPointer, false);
+		getDigitSignals(thirdDigit, thirdSignalsPointer, true);
+		getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 	}
 
 	else if(csDecimal && asDecimal){
-		getDigitSignals(firstDigit, firstDigitSignals, true);
-		getDigitSignals(secondDigit, secondDigitSignals, false);
-		getDigitSignals(thirdDigit, thirdDigitSignals, true);
-		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+		getDigitSignals(firstDigit, firstSignalsPointer, true);
+		getDigitSignals(secondDigit, secondSignalsPointer, false);
+		getDigitSignals(thirdDigit, thirdSignalsPointer, true);
+		getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 	}
 
 	else{
-		getDigitSignals(firstDigit, firstDigitSignals, false);
-		getDigitSignals(secondDigit, secondDigitSignals, false);
-		getDigitSignals(thirdDigit, thirdDigitSignals, false);
-		getDigitSignals(fourthDigit, fourthDigitSignals, false);
+		getDigitSignals(firstDigit, firstSignalsPointer, false);
+		getDigitSignals(secondDigit, secondSignalsPointer, false);
+		getDigitSignals(thirdDigit, thirdSignalsPointer, false);
+		getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 	}
 
 	updateDisplay();
 }
 
+//TODO Solve double precision errors ex. 17.2 = 17.1999999999999. So 17.1 is displayed
 void Display::displayDistance(double distance){
 
 	if(distance < 1){
@@ -217,20 +224,20 @@ void Display::displayDistance(double distance){
 		firstDigit = -1;
 		secondDigit = (int)(distance/10);
 		thirdDigit = (int)distance % 10;
-		fourthDigit = (int)(distance * 10) % 10;
+		fourthDigit = ((int)(distance * 10)) % 10;
 	}
 
 	else if(distance >= 100){
 		firstDigit = (int)(distance/100);
-		secondDigit = (int)(distance); //TODO make this correct
+		secondDigit = ((int)(distance/10)) % 10;
 		thirdDigit = (int)distance % 10;
-		fourthDigit = (int)(distance * 10) % 10;
+		fourthDigit = ((int)(distance * 10)) % 10;
 	}
 
-	getDigitSignals(firstDigit, firstDigitSignals, false);
-	getDigitSignals(secondDigit, secondDigitSignals, false);
-	getDigitSignals(thirdDigit, thirdDigitSignals, true);
-	getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	getDigitSignals(firstDigit, firstSignalsPointer, false);
+	getDigitSignals(secondDigit, secondSignalsPointer, false);
+	getDigitSignals(thirdDigit, thirdSignalsPointer, true);
+	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 
 	updateDisplay();
 }
@@ -260,14 +267,24 @@ void Display::displayTime(TIME time){
 		fourthDigit = sec % 10;
 	}
 
-	getDigitSignals(firstDigit, firstDigitSignals, false);
-	getDigitSignals(secondDigit, secondDigitSignals, true);
-	getDigitSignals(thirdDigit, thirdDigitSignals, false);
-	getDigitSignals(fourthDigit, fourthDigitSignals, false);
+	getDigitSignals(firstDigit, firstSignalsPointer, false);
+	getDigitSignals(secondDigit, secondSignalsPointer, true);
+	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
+	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 
 	updateDisplay();
 }
 
 void Display::updateDisplay(){
 	//TODO magical bullshit to display the digits fast enough
+
+	//For Testing
+	cout << "First Digit: " << firstDigit << "\n";
+	cout << "First Digit Signal: " << *firstSignalsPointer << "\n";
+	cout << "Second Digit: " << secondDigit << "\n";
+	cout << "Second Digit Signal: " << *secondSignalsPointer << "\n";
+	cout << "Third Digit: " << thirdDigit << "\n";
+	cout << "Third Digit Signal: " << *thirdSignalsPointer << "\n";
+	cout << "Fourth Digit: " << fourthDigit << "\n";
+	cout << "Fourth Digit Signal: " << *fourthSignalsPointer << "\n";
 }

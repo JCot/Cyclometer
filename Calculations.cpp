@@ -6,6 +6,7 @@
  */
 
 #include "Calculations.h"
+#include "global.h"
 #include <string>
 #include <math.h>
 #include <iostream>
@@ -47,6 +48,7 @@ void Calculations::calcCurrentSpeed(double wheelCirc, TIME timePassed){
 		currentSpeed = 0.0;
 	}
 
+	//For testing purposes. Remove before turning in
 	cout << "Current Speed: " << currentSpeed << "\n";
 
 	speeds.push_back(currentSpeed);
@@ -74,11 +76,17 @@ void Calculations::calcAverageSpeed(){
 		averageSpeed = 0.0;
 	}
 
+	//For testing purposes. Remove before turning in
 	cout << "Average Speed: " << averageSpeed << "\n";
 }
 
 void Calculations::calcTripDistance(double wheelCirc){
-	tripDistance = tripDistance + (wheelCirc/100);
+	tripDistance = tripDistance + (wheelCirc/100000);
+
+	//For testing purposes. Remove before turning in
+	if(tripDistance >= 1){
+		cout << "Trip Distance: " << roundTenth(tripDistance) << "\n";
+	}
 }
 
 void Calculations::startTripTimer(){
@@ -110,15 +118,31 @@ void Calculations::runCalculations(double wheelCirc, TIME timePassed){
 void Calculations::updateDisplay(){
 	string state = "Speed"; //Temporary variable until state machine implemented
 
-	if(state == "Speed"){
-		display.displaySpeeds(currentSpeed, averageSpeed);
+	if(units == "Metric"){
+		if(state == "Speed"){
+			display.displaySpeeds(currentSpeed, averageSpeed);
+		}
+
+		else if(state == "Time"){
+			display.displayTime(getTime());
+		}
+
+		else if(state == "Distance"){
+			display.displayDistance(roundTenth(tripDistance));
+		}
 	}
 
-	else if(state == "Time"){
-		display.displayTime(getTime());
-	}
+	else if(units == "English"){
+		if(state == "Speed"){
+			display.displaySpeeds(currentSpeed, averageSpeed);
+		}
 
-	else if(state == "Distance"){
-		display.displayDistance(tripDistance);
+		else if(state == "Time"){
+			display.displayTime(getTime());
+		}
+
+		else if(state == "Distance"){
+			display.displayDistance(roundTenth(tripDistance));
+		}
 	}
 }
