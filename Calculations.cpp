@@ -24,16 +24,15 @@ Calculations::~Calculations() {
 }
 
 double Calculations::roundWhole(double num){
-	//return round(num);
-	return 0.0;
+	return round(num);
 }
 
 double Calculations::roundTenth(double num){
 	return double(int(num * 10 + 0.5))/10;
 }
 
-void Calculations::calcCurrentSpeed(double wheelCirc, TIME timePassed){
-	int tempTime = timePassed.sec + (timePassed.min * 60);
+void Calculations::calcCurrentSpeed(double wheelCirc, PULSE_TIME timePassed){
+	double tempTime = timePassed.sec;
 	currentSpeed = (wheelCirc/100000) * (3600/tempTime);
 
 	if(currentSpeed >= 10){
@@ -109,7 +108,7 @@ void Calculations::resetTrip(){
 	stopwatch.reset();
 }
 
-void Calculations::runCalculations(double wheelCirc, TIME timePassed){
+void Calculations::runCalculations(double wheelCirc, PULSE_TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
 	calcAverageSpeed();
 	calcTripDistance(wheelCirc);

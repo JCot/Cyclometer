@@ -6,12 +6,27 @@
  */
 
 #include "MagnetSensor.h"
+#include "global.h"
 
 MagnetSensor::MagnetSensor() {
-	// TODO Auto-generated constructor stub
-
+	timer = PulseTimer();
+	firstPulse = true;
+	calcs = Calculations();
 }
 
 MagnetSensor::~MagnetSensor() {
 	// TODO Auto-generated destructor stub
+}
+
+void MagnetSensor::pulseDetected(){
+	if(firstPulse){
+		timer.start();
+		firstPulse = false;
+	}
+
+	else{
+		timeBetweenPulses = timer.stop();
+
+		calcs.runCalculations(wheelCirc, timeBetweenPulses);
+	}
 }

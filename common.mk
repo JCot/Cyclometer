@@ -15,7 +15,7 @@ USEFILE=
 EXTRA_SUFFIXES+=cxx cpp
 
 #===== LDFLAGS - add the flags to the linker command line.
-LDFLAGS+=-lang-c++
+LDFLAGS+=-lang-c++ -lm
 
 VFLAG_g=-gstabs+
 

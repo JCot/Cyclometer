@@ -19,5 +19,6 @@ const static std::string ENGLISH = "english";
 const static std::string METRIC = "metric";
 
 extern std::string units;
+extern int wheelCirc;
 
 #endif /* GLOBAL_H_ */

@@ -21,7 +21,7 @@ Test::Test() {}
 
 Test::~Test() {}
 
-void testSpeedCalculation(double wheelCirc, TIME timePassed){
+void testSpeedCalculation(double wheelCirc, PULSE_TIME timePassed){
 	calcs.calcCurrentSpeed(wheelCirc, timePassed);
 }
 
@@ -56,17 +56,15 @@ void testDisplayTime(){
 	TIME time;
 	time.min = 45;
 	time.sec = 23;
-	cout << "Test Display Time";
+	cout << "Test Display Time\n";
 	display.displayTime(time);
 }
 
 int main(int argc, char *argv[]){
-	TIME time1;
-	TIME time2;
-	time1.min = 0;
-	time1.sec = 1;
-	time2.min = 0;
-	time2.sec = 2;
+	PULSE_TIME time1;
+	PULSE_TIME time2;
+	time1.sec = .13;
+	time2.sec = .2;
 	double wheel = 220;
 
 	testSpeedCalculation(wheel, time1);

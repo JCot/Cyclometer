@@ -11,6 +11,7 @@
 #include <time.h>
 #include <vector>
 #include "Stopwatch.h"
+#include "PulseTimer.h"
 #include "Display.h"
 
 class Calculations {
@@ -21,10 +22,10 @@ public:
 	void stopTripTimer();
 	TIME getTime();
 	void resetTrip();
-	void runCalculations(double wheelCirc, TIME timePassed);
+	void runCalculations(double wheelCirc, PULSE_TIME timePassed);
 
 	//Move to private once testing complete
-	void calcCurrentSpeed(double wheelCirc, TIME timePassed);
+	void calcCurrentSpeed(double wheelCirc, PULSE_TIME timePassed);
 	void calcAverageSpeed();
 	void calcTripDistance(double wheelCirc);
 	void updateDisplay();
