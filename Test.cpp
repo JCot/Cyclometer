@@ -43,10 +43,20 @@ void testTripTimer(){
 	cout.flush();
 }
 
-void testDisplay(){
+void testDisplaySpeed(){
+	cout << "Test Speeds < 10\n";
+	display.displaySpeeds(7.9, 8.5);
+	cout << "Test Speeds > 10\n";
+	display.displaySpeeds(29, 35);
+	cout << "Test Speeds < 1\n";
+	display.displaySpeeds(.5, .6);
+}
+
+void testDisplayTime(){
 	TIME time;
 	time.min = 45;
 	time.sec = 23;
+	cout << "Test Display Time";
 	display.displayTime(time);
 }
 
@@ -60,10 +70,17 @@ int main(int argc, char *argv[]){
 	double wheel = 220;
 
 	testSpeedCalculation(wheel, time1);
+	cout.flush();
 	testSpeedCalculation(wheel, time2);
+	cout.flush();
 	testAverageSpeed();
+	cout.flush();
 	testTripDistance(wheel);
-	testDisplay();
+	cout.flush();
+	testDisplayTime();
+	cout.flush();
+	testDisplaySpeed();
+	cout.flush();
 	testTripTimer();
 	testTripTimer();
 

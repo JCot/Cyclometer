@@ -27,12 +27,12 @@ public:
 	void calcCurrentSpeed(double wheelCirc, TIME timePassed);
 	void calcAverageSpeed();
 	void calcTripDistance(double wheelCirc);
+	void updateDisplay();
 
 private:
 	double roundWhole(double num);
 	double roundTenth(double num);
 
-	void updateDisplay();
 	Stopwatch stopwatch;
 	double currentSpeed;
 	double averageSpeed;

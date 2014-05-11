@@ -117,8 +117,9 @@ void Calculations::runCalculations(double wheelCirc, TIME timePassed){
 
 void Calculations::updateDisplay(){
 	string state = "Speed"; //Temporary variable until state machine implemented
+	units = ENGLISH;
 
-	if(units == "Metric"){
+	if(units == METRIC){
 		if(state == "Speed"){
 			display.displaySpeeds(currentSpeed, averageSpeed);
 		}
@@ -132,9 +133,10 @@ void Calculations::updateDisplay(){
 		}
 	}
 
-	else if(units == "English"){
+	else if(units == ENGLISH){
 		if(state == "Speed"){
-			display.displaySpeeds(currentSpeed, averageSpeed);
+			display.displaySpeeds(roundTenth(currentSpeed * UNIT_CONVERSION_FACTOR),
+					roundTenth(averageSpeed * UNIT_CONVERSION_FACTOR));
 		}
 
 		else if(state == "Time"){
@@ -142,7 +144,7 @@ void Calculations::updateDisplay(){
 		}
 
 		else if(state == "Distance"){
-			display.displayDistance(roundTenth(tripDistance));
+			display.displayDistance(roundTenth(tripDistance * UNIT_CONVERSION_FACTOR));
 		}
 	}
 }

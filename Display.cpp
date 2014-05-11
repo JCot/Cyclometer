@@ -20,10 +20,10 @@ static void sigintHandler(int sig){
 	//TODO
 }
 
-int firstDigit = 1;
-int secondDigit = 5;
-int thirdDigit = 3;
-int fourthDigit = 0;
+int firstDigit;
+int secondDigit;
+int thirdDigit;
+int fourthDigit;
 
 int firstDigitSignals;
 int secondDigitSignals;
@@ -154,9 +154,15 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 		csDecimal = false;
 	}
 
-	else if(currentSpeed >= 0 && currentSpeed < 10){
+	else if(currentSpeed >= 1 && currentSpeed < 10){
 		firstDigit = (int)currentSpeed;
 		secondDigit = ((int)(currentSpeed * 10)) % 10;
+		csDecimal = true;
+	}
+
+	else if(currentSpeed >= 0 && currentSpeed < 1){
+		firstDigit = 0;
+		secondDigit = 0;
 		csDecimal = true;
 	}
 
@@ -166,9 +172,15 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 		asDecimal = false;
 	}
 
-	else if(averageSpeed >= 0 && averageSpeed < 10){
+	else if(averageSpeed >= 1 && averageSpeed < 10){
 		thirdDigit = (int)averageSpeed;
 		fourthDigit = ((int)(averageSpeed * 10)) % 10;
+		asDecimal = true;
+	}
+
+	else if(averageSpeed >= 0 && averageSpeed < 1){
+		thirdDigit = 0;
+		fourthDigit = 0;
 		asDecimal = true;
 	}
 
