@@ -8,7 +8,7 @@
 #ifndef MAGNETSENSOR_H_
 #define MAGNETSENSOR_H_
 
-#include "PulseTimer.h";
+#include "PulseTimer.h"
 #include "Calculations.h"
 
 class MagnetSensor {

@@ -22,12 +22,12 @@ public:
 	void stopTripTimer();
 	TIME getTime();
 	void resetTrip();
-	void runCalculations(double wheelCirc, PULSE_TIME timePassed);
+	void runCalculations(int wheelCirc, PULSE_TIME timePassed);
 
 	//Move to private once testing complete
-	void calcCurrentSpeed(double wheelCirc, PULSE_TIME timePassed);
+	void calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed);
 	void calcAverageSpeed();
-	void calcTripDistance(double wheelCirc);
+	void calcTripDistance(int wheelCirc);
 	void updateDisplay();
 
 private:

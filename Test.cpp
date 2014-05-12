@@ -9,6 +9,7 @@
 #include "Calculations.h"
 #include "Stopwatch.h"
 #include "Display.h"
+#include "global.h"
 #include <iostream>
 #include <unistd.h>
 
@@ -21,7 +22,7 @@ Test::Test() {}
 
 Test::~Test() {}
 
-void testSpeedCalculation(double wheelCirc, PULSE_TIME timePassed){
+void testSpeedCalculation(int wheelCirc, PULSE_TIME timePassed){
 	calcs.calcCurrentSpeed(wheelCirc, timePassed);
 }
 
@@ -29,7 +30,7 @@ void testAverageSpeed(){
 	calcs.calcAverageSpeed();
 }
 
-void testTripDistance(double wheelCirc){
+void testTripDistance(int wheelCirc){
 	for(int i = 0; i <= 455; i++){
 		calcs.calcTripDistance(wheelCirc);
 	}
@@ -65,15 +66,14 @@ int main(int argc, char *argv[]){
 	PULSE_TIME time2;
 	time1.sec = .13;
 	time2.sec = .2;
-	double wheel = 220;
 
-	testSpeedCalculation(wheel, time1);
+	testSpeedCalculation(wheelCirc, time1);
 	cout.flush();
-	testSpeedCalculation(wheel, time2);
+	testSpeedCalculation(wheelCirc, time2);
 	cout.flush();
 	testAverageSpeed();
 	cout.flush();
-	testTripDistance(wheel);
+	testTripDistance(wheelCirc);
 	cout.flush();
 	testDisplayTime();
 	cout.flush();

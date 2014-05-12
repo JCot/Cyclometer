@@ -8,3 +8,4 @@
 #include "global.h"
 
 std::string units = "Metric";
+int wheelCirc = 220;

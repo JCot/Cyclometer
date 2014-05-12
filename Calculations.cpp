@@ -31,7 +31,7 @@ double Calculations::roundTenth(double num){
 	return double(int(num * 10 + 0.5))/10;
 }
 
-void Calculations::calcCurrentSpeed(double wheelCirc, PULSE_TIME timePassed){
+void Calculations::calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed){
 	double tempTime = timePassed.sec;
 	currentSpeed = (wheelCirc/100000) * (3600/tempTime);
 
@@ -79,7 +79,7 @@ void Calculations::calcAverageSpeed(){
 	cout << "Average Speed: " << averageSpeed << "\n";
 }
 
-void Calculations::calcTripDistance(double wheelCirc){
+void Calculations::calcTripDistance(int wheelCirc){
 	tripDistance = tripDistance + (wheelCirc/100000);
 
 	//For testing purposes. Remove before turning in
@@ -108,10 +108,12 @@ void Calculations::resetTrip(){
 	stopwatch.reset();
 }
 
-void Calculations::runCalculations(double wheelCirc, PULSE_TIME timePassed){
+void Calculations::runCalculations(int wheelCirc, PULSE_TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
 	calcAverageSpeed();
 	calcTripDistance(wheelCirc);
+
+	updateDisplay();
 }
 
 void Calculations::updateDisplay(){

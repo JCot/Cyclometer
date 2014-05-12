@@ -16,10 +16,6 @@
 
 using namespace std;
 
-static void sigintHandler(int sig){
-	//TODO
-}
-
 int firstDigit;
 int secondDigit;
 int thirdDigit;
@@ -34,6 +30,10 @@ int * firstSignalsPointer = &firstDigitSignals;
 int * secondSignalsPointer = &secondDigitSignals;
 int * thirdSignalsPointer = &thirdDigitSignals;
 int * fourthSignalsPointer = &fourthDigitSignals;
+
+static void sigintHandler(int sig){
+	//TODO
+}
 
 void Display::getDigitSignals(int digit, int * position, bool decimal){
 	if(!decimal){
@@ -166,6 +166,12 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 		csDecimal = true;
 	}
 
+	else if(currentSpeed > 99){
+		firstDigit = 9;
+		secondDigit = 9;
+		csDecimal = false;
+	}
+
 	if(averageSpeed >= 10){
 		thirdDigit = (int)(averageSpeed/10);
 		fourthDigit = ((int)averageSpeed % 10);
@@ -182,6 +188,12 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 		thirdDigit = 0;
 		fourthDigit = 0;
 		asDecimal = true;
+	}
+
+	else if(averageSpeed > 99){
+		thirdDigit = 9;
+		fourthDigit = 9;
+		asDecimal = false;
 	}
 
 	if(csDecimal && !asDecimal){
