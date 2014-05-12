@@ -26,7 +26,10 @@ void MagnetSensor::pulseDetected(){
 
 	else{
 		timeBetweenPulses = timer.stop();
+		timer.start();
 
-		calcs.runCalculations(wheelCirc, timeBetweenPulses);
+		if(mode == AUTO || (mode == MANUAL && doCalculations)){
+			calcs.runCalculations(wheelCirc, timeBetweenPulses);
+		}
 	}
 }

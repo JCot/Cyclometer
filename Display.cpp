@@ -16,23 +16,47 @@
 
 using namespace std;
 
-int firstDigit;
-int secondDigit;
-int thirdDigit;
-int fourthDigit;
-
-int firstDigitSignals;
-int secondDigitSignals;
-int thirdDigitSignals;
-int fourthDigitSignals;
-
-int * firstSignalsPointer = &firstDigitSignals;
-int * secondSignalsPointer = &secondDigitSignals;
-int * thirdSignalsPointer = &thirdDigitSignals;
-int * fourthSignalsPointer = &fourthDigitSignals;
-
 static void sigintHandler(int sig){
 	//TODO
+}
+
+Display::Display() {
+
+	firstSignalsPointer = &firstDigitSignals;
+	secondSignalsPointer = &secondDigitSignals;
+	thirdSignalsPointer = &thirdDigitSignals;
+	fourthSignalsPointer = &fourthDigitSignals;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = sigintHandler;
+	signal(SIGUSR1, sigintHandler);
+
+	ThreadCtl(_NTO_TCTL_IO, NULL);
+
+	portAHandle = mmap_device_io(1, DATA_PORT_A);
+	portBHandle = mmap_device_io(1, DATA_PORT_B);
+	portCHandle = mmap_device_io(1, DATA_PORT_C);
+	directionHandle = mmap_device_io(1, DATA_DIRECTION);
+
+	if(portAHandle == MAP_DEVICE_FAILED){
+		perror("Failed to map control register");
+	}
+
+	if(portBHandle == MAP_DEVICE_FAILED){
+		perror("Failed to map control register");
+	}
+
+	if(directionHandle == MAP_DEVICE_FAILED){
+		perror("Failed to map control register");
+	}
+
+	out8(directionHandle, 0x02);
+
+}
+
+Display::~Display() {
+	// TODO Auto-generated destructor stub
 }
 
 void Display::getDigitSignals(int digit, int * position, bool decimal){
@@ -111,37 +135,6 @@ void Display::getDigitSignals(int digit, int * position, bool decimal){
 			break;
 		}
 	}
-}
-
-Display::Display() {
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = sigintHandler;
-	signal(SIGUSR1, sigintHandler);
-
-	ThreadCtl(_NTO_TCTL_IO, NULL);
-
-	portAHandle = mmap_device_io(1, DATA_PORT_A);
-	portBHandle = mmap_device_io(1, DATA_PORT_B);
-	directionHandle = mmap_device_io(1, DATA_DIRECTION);
-
-	if(portAHandle == MAP_DEVICE_FAILED){
-		perror("Failed to map control register");
-	}
-
-	if(portBHandle == MAP_DEVICE_FAILED){
-		perror("Failed to map control register");
-	}
-
-	if(directionHandle == MAP_DEVICE_FAILED){
-		perror("Failed to map control register");
-	}
-
-}
-
-Display::~Display() {
-	// TODO Auto-generated destructor stub
 }
 
 void Display::displaySpeeds(double currentSpeed, double averageSpeed){
@@ -227,7 +220,7 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 	updateDisplay();
 }
 
-//TODO Solve double precision errors ex. 17.2 = 17.1999999999999. So 17.1 is displayed
+//TODO Solve double precision errors ex. 17.2 becomes 17.1999999999999. So 17.1 is displayed
 void Display::displayDistance(double distance){
 
 	if(distance < 1){
@@ -303,12 +296,24 @@ void Display::updateDisplay(){
 	//TODO magical bullshit to display the digits fast enough
 
 	//For Testing
-	cout << "First Digit: " << firstDigit << "\n";
-	cout << "First Digit Signal: " << *firstSignalsPointer << "\n";
-	cout << "Second Digit: " << secondDigit << "\n";
-	cout << "Second Digit Signal: " << *secondSignalsPointer << "\n";
-	cout << "Third Digit: " << thirdDigit << "\n";
-	cout << "Third Digit Signal: " << *thirdSignalsPointer << "\n";
-	cout << "Fourth Digit: " << fourthDigit << "\n";
-	cout << "Fourth Digit Signal: " << *fourthSignalsPointer << "\n";
+//	cout << "First Digit: " << firstDigit << "\n";
+//	cout << "First Digit Signal: " << *firstSignalsPointer << "\n";
+//	cout << "Second Digit: " << secondDigit << "\n";
+//	cout << "Second Digit Signal: " << *secondSignalsPointer << "\n";
+//	cout << "Third Digit: " << thirdDigit << "\n";
+//	cout << "Third Digit Signal: " << *thirdSignalsPointer << "\n";
+//	cout << "Fourth Digit: " << fourthDigit << "\n";
+//	cout << "Fourth Digit Signal: " << *fourthSignalsPointer << "\n";
+
+	//TODO come up with a better loop
+	while(true){
+		out8(portCHandle, ANODE_THREE);
+		out8(portAHandle, firstDigitSignals);
+		out8(portCHandle, ANODE_TWO);
+		out8(portAHandle, secondDigitSignals);
+		out8(portCHandle, ANODE_ONE);
+		out8(portAHandle, thirdDigitSignals);
+		out8(portCHandle, ANODE_ZERO);
+		out8(portAHandle, fourthDigitSignals);
+	}
 }

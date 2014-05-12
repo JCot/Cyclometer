@@ -24,9 +24,26 @@ public:
 private:
 	uintptr_t portAHandle;
 	uintptr_t portBHandle;
+	uintptr_t portCHandle;
 	uintptr_t directionHandle;
 	void getDigitSignals(int digit, int * position, bool decimal);
 	void updateDisplay();
+
+	int firstDigit;
+	int secondDigit;
+	int thirdDigit;
+	int fourthDigit;
+
+	int firstDigitSignals;
+	int secondDigitSignals;
+	int thirdDigitSignals;
+	int fourthDigitSignals;
+
+	int * firstSignalsPointer;
+	int * secondSignalsPointer;
+	int * thirdSignalsPointer;
+	int * fourthSignalsPointer;
+
 	const static int NOTHING = 0xFF;
 	const static int ZERO_NO_DECIMAL = 0xC0;
 	const static int ZERO_DECIMAL = 0x40;
@@ -48,6 +65,11 @@ private:
 	const static int EIGHT_DECIMAL = 0x00;
 	const static int NINE_NO_DECIMAL = 0x90;
 	const static int NINE_DECIMAL = 0x10;
+
+	const static int ANODE_ZERO = 0xFE;
+	const static int ANODE_ONE = 0xFD;
+	const static int ANODE_TWO = 0xFB;
+	const static int ANODE_THREE = 0xF7;
 };
 
 #endif /* DISPLAY_H_ */

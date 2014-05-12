@@ -7,5 +7,7 @@
 
 #include "global.h"
 
-std::string units = "Metric";
+std::string units = METRIC;
+std::string mode = MANUAL;
+bool doCalculations = false;
 int wheelCirc = 220;
