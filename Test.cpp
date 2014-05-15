@@ -61,6 +61,10 @@ void testDisplayTime(){
 	display.displayTime(time);
 }
 
+void testDisplayDistance(){
+	display.displayDistance(101.4);
+}
+
 int main(int argc, char *argv[]){
 	PULSE_TIME time1;
 	PULSE_TIME time2;
@@ -78,6 +82,7 @@ int main(int argc, char *argv[]){
 //	testDisplayTime();
 //	cout.flush();
 	testDisplaySpeed();
+//	testDisplayDistance();
 //	cout.flush();
 //	testTripTimer();
 //	testTripTimer();

@@ -11,6 +11,7 @@
 #include "Stopwatch.h"
 #include <signal.h>
 #include <stdint.h>
+#include <pthread.h>
 
 class Display {
 public:
@@ -20,14 +21,16 @@ public:
 	void displayDistance(double distance);
 	void displayTime(TIME time);
 	struct sigaction sa;
+	void* updateDisplay();
 
 private:
 	uintptr_t portAHandle;
 	uintptr_t portBHandle;
 	uintptr_t portCHandle;
 	uintptr_t directionHandle;
+	pthread_t displayThread;
 	void getDigitSignals(int digit, int * position, bool decimal);
-	void updateDisplay();
+	void updateDisplayHelper();
 
 	int firstDigit;
 	int secondDigit;

@@ -256,7 +256,7 @@ void Display::displayDistance(double distance){
 	getDigitSignals(thirdDigit, thirdSignalsPointer, true);
 	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 
-	updateDisplay();
+//	updateDisplayHelper();
 }
 
 void Display::displayTime(TIME time){
@@ -289,12 +289,24 @@ void Display::displayTime(TIME time){
 	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
 	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 
-	updateDisplay();
+	updateDisplayHelper();
 }
 
-void Display::updateDisplay(){
-	//TODO magical bullshit to display the digits fast enough
+void* helperHelper(void* args){
+	return static_cast<Display*>(args)->updateDisplay();
+}
 
+void Display::updateDisplayHelper(){
+
+	pthread_attr_t attr;
+
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+	pthread_create(&displayThread, NULL, &helperHelper, this);
+}
+
+void* Display::updateDisplay(){
 	//For Testing
 //	cout << "First Digit: " << firstDigit << "\n";
 //	cout << "First Digit Signal: " << *firstSignalsPointer << "\n";
@@ -309,11 +321,17 @@ void Display::updateDisplay(){
 	while(true){
 		out8(portCHandle, ANODE_THREE);
 		out8(portAHandle, firstDigitSignals);
+		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_TWO);
 		out8(portAHandle, secondDigitSignals);
+		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_ONE);
 		out8(portAHandle, thirdDigitSignals);
+		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_ZERO);
 		out8(portAHandle, fourthDigitSignals);
+		out8(portAHandle, NOTHING);
 	}
+
+	return NULL;
 }
