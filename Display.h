@@ -20,6 +20,7 @@ public:
 	void displaySpeeds(double currentSpeed, double averageSpeed);
 	void displayDistance(double distance);
 	void displayTime(TIME time);
+	void displayWheelCirc();
 	struct sigaction sa;
 	void* updateDisplay();
 

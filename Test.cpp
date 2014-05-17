@@ -17,6 +17,7 @@ using namespace std;
 
 Calculations calcs = Calculations();
 Display display = Display();
+pthread_t dummyThread;
 
 Test::Test() {}
 
@@ -65,11 +66,23 @@ void testDisplayDistance(){
 	display.displayDistance(101.4);
 }
 
+void* sleepyTime(void* param){
+	sleep(5);
+	return NULL;
+}
+
 int main(int argc, char *argv[]){
 	PULSE_TIME time1;
 	PULSE_TIME time2;
 	time1.sec = .13;
 	time2.sec = .2;
+
+	pthread_attr_t attr;
+
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
 
 //	testSpeedCalculation(wheelCirc, time1);
 //	cout.flush();
@@ -81,7 +94,13 @@ int main(int argc, char *argv[]){
 //	cout.flush();
 //	testDisplayTime();
 //	cout.flush();
+	pthread_join(dummyThread, NULL);
+	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
 	testDisplaySpeed();
+	pthread_join(dummyThread, NULL);
+	testDisplayDistance();
+	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
+	pthread_join(dummyThread, NULL);
 //	testDisplayDistance();
 //	cout.flush();
 //	testTripTimer();

@@ -8,6 +8,8 @@
 #ifndef TEST_H_
 #define TEST_H_
 
+#include <pthread.h>
+
 class Test {
 public:
 	Test();

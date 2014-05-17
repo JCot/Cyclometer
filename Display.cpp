@@ -20,6 +20,10 @@ static void sigintHandler(int sig){
 	//TODO
 }
 
+void* helperHelper(void* args){
+	return static_cast<Display*>(args)->updateDisplay();
+}
+
 Display::Display() {
 
 	firstSignalsPointer = &firstDigitSignals;
@@ -52,6 +56,18 @@ Display::Display() {
 	}
 
 	out8(directionHandle, 0x02);
+
+	firstDigitSignals = NOTHING;
+	secondDigitSignals = NOTHING;
+	thirdDigitSignals = NOTHING;
+	fourthDigitSignals = ONE_NO_DECIMAL;
+
+	pthread_attr_t attr;
+
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+
+	pthread_create(&displayThread, NULL, &helperHelper, this);
 
 }
 
@@ -217,7 +233,7 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 		getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 	}
 
-	updateDisplay();
+//	updateDisplayHelper();
 }
 
 //TODO Solve double precision errors ex. 17.2 becomes 17.1999999999999. So 17.1 is displayed
@@ -289,11 +305,20 @@ void Display::displayTime(TIME time){
 	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
 	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
 
-	updateDisplayHelper();
+//	updateDisplayHelper();
 }
 
-void* helperHelper(void* args){
-	return static_cast<Display*>(args)->updateDisplay();
+void Display::displayWheelCirc(){
+	firstDigit = NOTHING;
+	secondDigit = (int)(wheelCirc/100);
+	thirdDigit = ((int)(wheelCirc/10)) % 10;
+	fourthDigit = wheelCirc % 10;
+
+	getDigitSignals(firstDigit, firstSignalsPointer, false);
+	getDigitSignals(secondDigit, secondSignalsPointer, false);
+	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
+	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
+
 }
 
 void Display::updateDisplayHelper(){
