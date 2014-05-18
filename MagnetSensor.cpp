@@ -77,7 +77,7 @@ void MagnetSensor::watchSensor(){
 	//Calculations should finish in under 100 nanoseconds
 	struct timespec tim;
 	tim.tv_sec = 0;
-	tim.tv_nsec = 200;
+	tim.tv_nsec = 500;
 
 	int magnetValue = 0x80;
 	int oldValue = 0x80;

@@ -337,19 +337,27 @@ void* Display::updateDisplay(){
 //	cout << "Fourth Digit: " << fourthDigit << "\n";
 //	cout << "Fourth Digit Signal: " << *fourthSignalsPointer << "\n";
 
+	struct timespec tim;
+	tim.tv_sec = 0;
+	tim.tv_nsec = 200;
+
 	//TODO come up with a better loop
 	while(true){
 		out8(portCHandle, ANODE_THREE);
 		out8(portAHandle, firstDigitSignals);
+		nanosleep(&tim, NULL);
 		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_TWO);
 		out8(portAHandle, secondDigitSignals);
+		nanosleep(&tim, NULL);
 		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_ONE);
 		out8(portAHandle, thirdDigitSignals);
+		nanosleep(&tim, NULL);
 		out8(portAHandle, NOTHING);
 		out8(portCHandle, ANODE_ZERO);
 		out8(portAHandle, fourthDigitSignals);
+		nanosleep(&tim, NULL);
 		out8(portAHandle, NOTHING);
 	}
 
