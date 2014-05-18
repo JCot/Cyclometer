@@ -17,6 +17,7 @@ Calculations::Calculations() {
 	currentSpeed = 0.0;
 	averageSpeed = 0.0;
 	tripDistance = 0.0;
+	display = Display();
 }
 
 Calculations::~Calculations() {
@@ -33,7 +34,7 @@ double Calculations::roundTenth(double num){
 
 void Calculations::calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed){
 	double tempTime = timePassed.sec;
-	currentSpeed = (wheelCirc/100000) * (3600/tempTime);
+	currentSpeed = (double)(wheelCirc/100000.0) * (3600/tempTime);
 
 	if(currentSpeed >= 10){
 		currentSpeed = roundWhole(currentSpeed);
@@ -48,7 +49,7 @@ void Calculations::calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed){
 	}
 
 	//For testing purposes. Remove before turning in
-	cout << "Current Speed: " << currentSpeed << "\n";
+//	cout << "Current Speed: " << currentSpeed << "\n";
 
 	speeds.push_back(currentSpeed);
 }
@@ -76,16 +77,16 @@ void Calculations::calcAverageSpeed(){
 	}
 
 	//For testing purposes. Remove before turning in
-	cout << "Average Speed: " << averageSpeed << "\n";
+//	cout << "Average Speed: " << averageSpeed << "\n";
 }
 
 void Calculations::calcTripDistance(int wheelCirc){
-	tripDistance = tripDistance + (wheelCirc/100000);
+	tripDistance = tripDistance + (double)(wheelCirc/100000.0);
 
 	//For testing purposes. Remove before turning in
-	if(tripDistance >= 1){
-		cout << "Trip Distance: " << roundTenth(tripDistance) << "\n";
-	}
+//	if(tripDistance >= 1){
+//		cout << "Trip Distance: " << roundTenth(tripDistance) << "\n";
+//	}
 }
 
 void Calculations::startTripTimer(){
@@ -110,41 +111,44 @@ void Calculations::resetTrip(){
 
 void Calculations::runCalculations(int wheelCirc, PULSE_TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
-	calcAverageSpeed();
-	calcTripDistance(wheelCirc);
+
+	if((mode == AUTO && timePassed.sec < 7.92) ||
+			(mode == MANUAL && doCalculations)){
+		calcAverageSpeed();
+		calcTripDistance(wheelCirc);
+	}
 
 	updateDisplay();
 }
 
 void Calculations::updateDisplay(){
 	string state = "Speed"; //Temporary variable until state machine implemented
-	units = ENGLISH;
 
 	if(units == METRIC){
-		if(state == "Speed"){
+		if(state.compare("Speed") == 0){
 			display.displaySpeeds(currentSpeed, averageSpeed);
 		}
 
-		else if(state == "Time"){
+		else if(state.compare("Time") == 0){
 			display.displayTime(getTime());
 		}
 
-		else if(state == "Distance"){
+		else if(state.compare("Distance") == 0){
 			display.displayDistance(roundTenth(tripDistance));
 		}
 	}
 
 	else if(units == ENGLISH){
-		if(state == "Speed"){
+		if(state.compare("Speed") == 0){
 			display.displaySpeeds(roundTenth(currentSpeed * UNIT_CONVERSION_FACTOR),
 					roundTenth(averageSpeed * UNIT_CONVERSION_FACTOR));
 		}
 
-		else if(state == "Time"){
+		else if(state.compare("Time") == 0){
 			display.displayTime(getTime());
 		}
 
-		else if(state == "Distance"){
+		else if(state.compare("Distance") == 0){
 			display.displayDistance(roundTenth(tripDistance * UNIT_CONVERSION_FACTOR));
 		}
 	}

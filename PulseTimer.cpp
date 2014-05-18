@@ -57,8 +57,8 @@ PULSE_TIME PulseTimer::stop(){
 }
 
 PULSE_TIME PulseTimer::getTimeElapsed(){
-	int tempTime = getTime();
-	int tempElapsed = tempTime - startTime;
+	double tempTime = getTime();
+	double tempElapsed = tempTime - startTime;
 
 	timeElapsed.sec = tempElapsed;
 

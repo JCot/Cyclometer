@@ -9,6 +9,7 @@
 #include "Calculations.h"
 #include "Stopwatch.h"
 #include "Display.h"
+#include "MagnetSensor.h"
 #include "global.h"
 #include <iostream>
 #include <unistd.h>
@@ -17,6 +18,7 @@ using namespace std;
 
 Calculations calcs = Calculations();
 Display display = Display();
+MagnetSensor sensor = MagnetSensor();
 pthread_t dummyThread;
 
 Test::Test() {}
@@ -82,7 +84,7 @@ int main(int argc, char *argv[]){
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
-	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
+//	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
 
 //	testSpeedCalculation(wheelCirc, time1);
 //	cout.flush();
@@ -94,13 +96,17 @@ int main(int argc, char *argv[]){
 //	cout.flush();
 //	testDisplayTime();
 //	cout.flush();
-	pthread_join(dummyThread, NULL);
-	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
-	testDisplaySpeed();
-	pthread_join(dummyThread, NULL);
-	testDisplayDistance();
-	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
-	pthread_join(dummyThread, NULL);
+//	pthread_join(dummyThread, NULL);
+//	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
+//	testDisplaySpeed();
+//	pthread_join(dummyThread, NULL);
+//	testDisplayDistance();
+//	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
+//	pthread_join(dummyThread, NULL);
+	wheelCirc = 220;
+	units = METRIC;
+	mode = AUTO;
+	sensor.watchSensor();
 //	testDisplayDistance();
 //	cout.flush();
 //	testTripTimer();

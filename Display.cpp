@@ -24,12 +24,22 @@ void* helperHelper(void* args){
 	return static_cast<Display*>(args)->updateDisplay();
 }
 
+//void Display::updateDisplayHelper(){
+//
+//	pthread_attr_t attr;
+//
+//	pthread_attr_init(&attr);
+//	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+//
+//	pthread_create(&displayThread, NULL, &helperHelper, this);
+//}
+
 Display::Display() {
 
-	firstSignalsPointer = &firstDigitSignals;
-	secondSignalsPointer = &secondDigitSignals;
-	thirdSignalsPointer = &thirdDigitSignals;
-	fourthSignalsPointer = &fourthDigitSignals;
+//	firstSignalsPointer = &firstDigitSignals;
+//	secondSignalsPointer = &secondDigitSignals;
+//	thirdSignalsPointer = &thirdDigitSignals;
+//	fourthSignalsPointer = &fourthDigitSignals;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
@@ -39,15 +49,10 @@ Display::Display() {
 	ThreadCtl(_NTO_TCTL_IO, NULL);
 
 	portAHandle = mmap_device_io(1, DATA_PORT_A);
-	portBHandle = mmap_device_io(1, DATA_PORT_B);
 	portCHandle = mmap_device_io(1, DATA_PORT_C);
 	directionHandle = mmap_device_io(1, DATA_DIRECTION);
 
 	if(portAHandle == MAP_DEVICE_FAILED){
-		perror("Failed to map control register");
-	}
-
-	if(portBHandle == MAP_DEVICE_FAILED){
 		perror("Failed to map control register");
 	}
 
@@ -69,6 +74,7 @@ Display::Display() {
 
 	pthread_create(&displayThread, NULL, &helperHelper, this);
 
+//	updateDisplayHelper();
 }
 
 Display::~Display() {
@@ -318,17 +324,6 @@ void Display::displayWheelCirc(){
 	getDigitSignals(secondDigit, secondSignalsPointer, false);
 	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
 	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
-
-}
-
-void Display::updateDisplayHelper(){
-
-	pthread_attr_t attr;
-
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
-	pthread_create(&displayThread, NULL, &helperHelper, this);
 }
 
 void* Display::updateDisplay(){
