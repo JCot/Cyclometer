@@ -10,9 +10,13 @@
 
 #include <iostream>
 #include "State.h"
+#include "Calculations.h"
 
 class SetTireState : public State{
 private:
+	bool systemReset;
+	int tireSize;
+    Calculations *calc;
 
 public:
 	SetTireState();
@@ -20,6 +24,7 @@ public:
     void onReEntry();
     void onExit();
     int transition( int event_id);
-
+    void fullSystemReset();
+    void adjustTireSize(int increment);
 };
 #endif /* SETTIRESTATE_H_ */

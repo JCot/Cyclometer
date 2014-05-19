@@ -10,10 +10,11 @@
 
 #include <iostream>
 #include "State.h"
+#include "Calculations.h"
 
 class FullResetState : public State{
 private:
-
+	Calculations *calc;
 public:
 	FullResetState();
     void onEntry();

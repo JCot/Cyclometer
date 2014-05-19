@@ -10,16 +10,19 @@
 
 #include <iostream>
 #include "State.h"
+#include "Calculations.h"
 
 class ShowDistanceState : public State{
 private:
-
+    Calculations *calc;
 public:
 	ShowDistanceState();
     void onEntry();
     void onReEntry();
     void onExit();
     int transition( int event_id);
+    void tripReset();
+    void pauseCalc();
 
 };
 

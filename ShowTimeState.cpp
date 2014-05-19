@@ -8,7 +8,8 @@
 #include "ShowTimeState.h"
 
 
-ShowTimeState::ShowTimeState(){
+ShowTimeState::ShowTimeState(Calculations* myCalc){
+	this -> calc = myCalc;
 }
 
 
@@ -26,32 +27,47 @@ int ShowTimeState::transition(int event_id){
 
 	switch( event_id ){
 
-	case EVENT_PUSHBUTTON:
-		return 4;
+	case EVENT_SET:
+		toggleAutoMode();
+		return STATE_SHOWTIME;
 		break;
-	case EVENT_IR:
-		return 3;
+	case EVENT_FASTMODE:
+	case EVENT_MODE:
+		return STATE_SHOWSPEED;
 		break;
-	case EVENT_DOOROPEN:
-		std::printf("No transition for DoorOpen event in Closing state.\n");
-		return -1;
-		break;
-	case EVENT_DOORCLOSED:
-		return 0;
-		break;
-	case EVENT_MOTOROVERCURRENT:
-		return 3;
+	case EVENT_TRIPRESET:
+		tripReset();
+		return STATE_SHOWTIME;
 		break;
 	case EVENT_RESET:
-		return 0;
+		return STATE_FULLRESET;
+		break;
+	case EVENT_STARTSTOP:
+		pauseCalc();
+		return STATE_SHOWTIME;
 		break;
 	default:
-		std::printf( "ERROR: no event definition for closing code:%d\n", event_id);
+		std::printf( "ERROR: no event definition for FullReset code:%d\n", event_id);
 		return -1;
 
 	}
-
 	return -1;
+}
 
+void ShowTimeState::toggleAutoMode(){
+
+	//calc toggle function call here
+
+}
+
+void ShowTimeState::tripReset(){
+
+	// calc reset function here
+
+}
+
+void ShowTimeState::pauseCalc(){
+
+	// calc pause function here
 
 }

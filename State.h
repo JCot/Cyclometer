@@ -9,20 +9,19 @@
 #ifndef __StateMachine__State__
 #define __StateMachine__State__
 
-#define STATE_CLOSEDDOOR 0
-#define STATE_CLOSINGDOOR 1
-#define STATE_OPENDDOOR 2
-#define STATE_OPENINGDOOR 3
-#define STATE_IDLELOWERINGDOOR 4
-#define STATE_IDLEROPENINGDOOR 5
+#define STATE_FULLRESET 0
+#define STATE_SETUNITS 1
+#define STATE_SETTIRE 2
+#define STATE_SHOWDISTANCE 3
+#define STATE_SHOWSPEED 4
+#define STATE_SHOWTIME 5
 
-#define EVENT_PUSHBUTTON 'p'
-#define EVENT_IR 'i'
-#define EVENT_DOOROPEN 'o'
-#define EVENT_DOORCLOSED 'c'
-#define EVENT_MOTOROVERCURRENT 'm'
-#define EVENT_EXIT 'q'
+#define EVENT_SET 's'
+#define EVENT_MODE 'm'
+#define EVENT_FASTMODE 'f'
+#define EVENT_TRIPRESET 't'
 #define EVENT_RESET 'r'
+#define EVENT_STARTSTOP 'x'
 
 #include <iostream>
 #include <stdio.h>

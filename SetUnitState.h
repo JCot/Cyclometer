@@ -10,9 +10,12 @@
 
 #include <iostream>
 #include "State.h"
+#include "Calculations.h"
 
 class SetUnitState : public State{
 private:
+	bool useKilometers;
+    Calculations *calc;
 
 public:
 	SetUnitState();

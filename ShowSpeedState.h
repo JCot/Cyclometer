@@ -11,16 +11,20 @@
 
 #include <iostream>
 #include "State.h"
+#include "Calculations.h"
 
 class ShowSpeedState : public State{
 private:
-    
+    Calculations *calc;
 public:
-	ShowSpeedState();
+	ShowSpeedState( Calculations* calc);
     void onEntry();
     void onReEntry();
     void onExit();
     int transition( int event_id);
+    void toggleAutoMode();
+    void tripReset();
+    void pauseCalc();
 
 };
 #endif /* defined(__StateMachine__ShowSpeedState__) */

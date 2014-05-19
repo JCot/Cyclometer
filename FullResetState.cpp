@@ -7,9 +7,9 @@
 
 #include "FullResetState.h"
 
-FullResetState::FullResetState(){
+FullResetState::FullResetState(Calculations* myCalc){
+	this -> calc = myCalc;
 }
-
 
 void FullResetState::onEntry(){
     printf("Entering Full Reset State State\n");
@@ -25,30 +25,26 @@ int FullResetState::transition(int event_id){
 
 	switch( event_id ){
 
-	case EVENT_PUSHBUTTON:
-		return 4;
+	case EVENT_SET:
+		return STATE_SETUNITS;
 		break;
-	case EVENT_IR:
-		return 3;
+	case EVENT_FASTMODE:
+	case EVENT_MODE:
+		return STATE_SETUNITS;
 		break;
-	case EVENT_DOOROPEN:
-		std::printf("No transition for DoorOpen event in Closing state.\n");
-		return -1;
-		break;
-	case EVENT_DOORCLOSED:
-		return 0;
-		break;
-	case EVENT_MOTOROVERCURRENT:
-		return 3;
+	case EVENT_TRIPRESET:
+		return STATE_FULLRESET;
 		break;
 	case EVENT_RESET:
-		return 0;
+		return STATE_FULLRESET;
+		break;
+	case EVENT_STARTSTOP:
+		return STATE_FULLRESET;
 		break;
 	default:
-		std::printf( "ERROR: no event definition for closing code:%d\n", event_id);
+		std::printf( "ERROR: no event definition for FullReset code:%d\n", event_id);
 		return -1;
 
 	}
-
 	return -1;
 }

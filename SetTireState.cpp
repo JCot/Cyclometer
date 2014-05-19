@@ -7,7 +7,10 @@
 
 #include "SetTireState.h"
 
-SetTireState::SetTireState(){
+SetTireState::SetTireState(Calculations* myCalc){
+	systemReset = true;
+	tireSize = 190;
+	this -> calc = myCalc;
 }
 
 
@@ -20,37 +23,56 @@ void SetTireState::onReEntry(){
 void SetTireState::onExit(){
     printf("Leaving Set Tire State State\n");
 }
-// TODO reimplement this function to work
+
+//190 to 220 inclusive
+
 int SetTireState::transition(int event_id){
 
 	switch( event_id ){
 
-	case EVENT_PUSHBUTTON:
-		return 4;
+	case EVENT_SET:
+		if( systemReset ){
+			return STATE_SHOWSPEED;
+			systemReset = false;
+		}
+		else{
+			return STATE_SHOWDISTANCE;
+		}
 		break;
-	case EVENT_IR:
-		return 3;
+	case EVENT_FASTMODE:
+		adjustTireSize(10);
+		return STATE_SETTIRE;
 		break;
-	case EVENT_DOOROPEN:
-		std::printf("No transition for DoorOpen event in Closing state.\n");
-		return -1;
+	case EVENT_MODE:
+		adjustTireSize(1);
+		return STATE_SETTIRE;
 		break;
-	case EVENT_DOORCLOSED:
-		return 0;
-		break;
-	case EVENT_MOTOROVERCURRENT:
-		return 3;
+	case EVENT_TRIPRESET:
+		return STATE_SETTIRE;
 		break;
 	case EVENT_RESET:
-		return 0;
+		return STATE_FULLRESET;
+		break;
+	case EVENT_STARTSTOP:
+		return STATE_SETTIRE;
 		break;
 	default:
-		std::printf( "ERROR: no event definition for closing code:%d\n", event_id);
+		std::printf( "ERROR: no event definition for SetTire code:%d\n", event_id);
 		return -1;
 
 	}
 
 	return -1;
+}
 
+void SetTireState::fullSystemReset(){
+	systemReset = true;
+	tireSize = 190;
+}
 
+void SetTireState::adjustTireSize( int increment ){
+	tireSize += increment;
+	if( tireSize > 220){
+		tireSize = (tireSize - 221) + 190;
+	}
 }
