@@ -22,7 +22,7 @@ static void sigintHandler(int sig){
 }
 
 MagnetSensor::MagnetSensor() {
-	timer = PulseTimer();
+	timer = Stopwatch();
 	firstPulse = true;
 	calcs = Calculations();
 
@@ -77,12 +77,13 @@ void MagnetSensor::watchSensor(){
 	//Calculations should finish in under 100 nanoseconds
 	struct timespec tim;
 	tim.tv_sec = 0;
-	tim.tv_nsec = 500;
+	tim.tv_nsec = 1000000;
 
 	int magnetValue = 0x80;
 	int oldValue = 0x80;
 	int temp;
 	int mask = 0x80;
+	int count = 0;
 
 	while(true){
 		temp = in8(portBHandle);
@@ -94,6 +95,7 @@ void MagnetSensor::watchSensor(){
 
 		oldValue = magnetValue;
 
+		count++;
 		nanosleep(&tim, NULL);
 	}
 }

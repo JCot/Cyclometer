@@ -8,7 +8,7 @@
 #ifndef MAGNETSENSOR_H_
 #define MAGNETSENSOR_H_
 
-#include "PulseTimer.h"
+#include "Stopwatch.h"
 #include "Calculations.h"
 #include <signal.h>
 #include <stdint.h>
@@ -26,8 +26,8 @@ private:
 	uintptr_t portBHandle;
 	uintptr_t directionHandle;
 	bool firstPulse;
-	PulseTimer timer;
-	PULSE_TIME timeBetweenPulses;
+	Stopwatch timer;
+	TIME timeBetweenPulses;
 	Calculations calcs;
 	pthread_t pulseThread;
 };

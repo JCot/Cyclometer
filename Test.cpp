@@ -25,7 +25,7 @@ Test::Test() {}
 
 Test::~Test() {}
 
-void testSpeedCalculation(int wheelCirc, PULSE_TIME timePassed){
+void testSpeedCalculation(int wheelCirc, TIME timePassed){
 	calcs.calcCurrentSpeed(wheelCirc, timePassed);
 }
 
@@ -74,8 +74,8 @@ void* sleepyTime(void* param){
 }
 
 int main(int argc, char *argv[]){
-	PULSE_TIME time1;
-	PULSE_TIME time2;
+	TIME time1;
+	TIME time2;
 	time1.sec = .13;
 	time2.sec = .2;
 
@@ -103,7 +103,6 @@ int main(int argc, char *argv[]){
 //	testDisplayDistance();
 //	pthread_create(&dummyThread, NULL, &sleepyTime, (void*)1);
 //	pthread_join(dummyThread, NULL);
-	wheelCirc = 220;
 	units = METRIC;
 	mode = AUTO;
 	sensor.watchSensor();

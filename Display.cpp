@@ -62,6 +62,15 @@ Display::Display() {
 
 	out8(directionHandle, 0x02);
 
+	out8(portCHandle, ANODE_THREE);
+	out8(portAHandle, NOTHING);
+	out8(portCHandle, ANODE_TWO);
+	out8(portAHandle, NOTHING);
+	out8(portCHandle, ANODE_ONE);
+	out8(portAHandle, NOTHING);
+	out8(portCHandle, ANODE_ZERO);
+	out8(portAHandle, NOTHING);
+
 	firstDigitSignals = NOTHING;
 	secondDigitSignals = NOTHING;
 	thirdDigitSignals = NOTHING;

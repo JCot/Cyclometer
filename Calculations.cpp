@@ -18,6 +18,9 @@ Calculations::Calculations() {
 	averageSpeed = 0.0;
 	tripDistance = 0.0;
 	display = Display();
+	tripTime.min = 0.0;
+	tripTime.sec = 0.0;
+//	startTripTimer();
 }
 
 Calculations::~Calculations() {
@@ -32,7 +35,7 @@ double Calculations::roundTenth(double num){
 	return double(int(num * 10 + 0.5))/10;
 }
 
-void Calculations::calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed){
+void Calculations::calcCurrentSpeed(int wheelCirc, TIME timePassed){
 	double tempTime = timePassed.sec;
 	currentSpeed = (double)(wheelCirc/100000.0) * (3600/tempTime);
 
@@ -100,31 +103,64 @@ void Calculations::stopTripTimer(){
 }
 
 TIME Calculations::getTime(){
-	return stopwatch.getTimeElapsed();
+	TIME time = stopwatch.getTimeElapsed();
+
+	if(time.sec >= 1){
+		div_t result = std::div(time.sec, 60);
+
+		tripTime.min += result.quot;
+		tripTime.sec = result.rem;
+	}
+
+	return tripTime;
 }
 
 void Calculations::resetTrip(){
 	tripDistance = 0.0;
 	currentSpeed = 0.0;
 	averageSpeed = 0.0;
-	tripTime = 0.0;
+	speeds.clear();
+	tripTime.min = 0.0;
+	tripTime.sec = 0.0;
+	rawTime.min = 0.0;
+	rawTime.sec = 0.0;
 	stopwatch.reset();
 }
 
-void Calculations::runCalculations(int wheelCirc, PULSE_TIME timePassed){
+void Calculations::toggleMode(){
+	if(mode == AUTO){
+		mode = MANUAL;
+	}
+
+	else{
+		mode = AUTO;
+	}
+}
+
+void Calculations::runCalculations(int wheelCirc, TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
 
 	if((mode == AUTO && timePassed.sec < 7.92) ||
 			(mode == MANUAL && doCalculations)){
 		calcAverageSpeed();
 		calcTripDistance(wheelCirc);
+
+		if(!stopwatch.isRunning()){
+			startTripTimer();
+		}
+	}
+
+	else{
+		if(stopwatch.isRunning()){
+			stopTripTimer();
+		}
 	}
 
 	updateDisplay();
 }
 
 void Calculations::updateDisplay(){
-	string state = "Speed"; //Temporary variable until state machine implemented
+	string state = "Time"; //Temporary variable until state machine implemented
 
 	if(units == METRIC){
 		if(state.compare("Speed") == 0){

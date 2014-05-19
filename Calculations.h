@@ -11,7 +11,6 @@
 #include <time.h>
 #include <vector>
 #include "Stopwatch.h"
-#include "PulseTimer.h"
 #include "Display.h"
 
 class Calculations {
@@ -22,13 +21,14 @@ public:
 	void stopTripTimer();
 	TIME getTime();
 	void resetTrip();
-	void runCalculations(int wheelCirc, PULSE_TIME timePassed);
+	void runCalculations(int wheelCirc, TIME timePassed);
 
 	//Move to private once testing complete
-	void calcCurrentSpeed(int wheelCirc, PULSE_TIME timePassed);
+	void calcCurrentSpeed(int wheelCirc, TIME timePassed);
 	void calcAverageSpeed();
 	void calcTripDistance(int wheelCirc);
 	void updateDisplay();
+	void toggleMode();
 
 private:
 	double roundWhole(double num);
@@ -38,10 +38,9 @@ private:
 	double currentSpeed;
 	double averageSpeed;
 	double tripDistance;
-	double startTime;
-	double endTime;
 	Display display;
-	time_t tripTime;
+	TIME tripTime;
+	TIME rawTime;
 	std::vector<double> speeds;
 };
 

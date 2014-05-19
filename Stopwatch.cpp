@@ -16,22 +16,20 @@ included in all copies or substantial portions of the Software.
 */
 
 
-
 /*
- * Stopwatch.cpp - created based upon the software referenced in the copyright
- * notice above.
+ * PulseTimer.cpp - created based upon the software referenced in the copyright
+ * notice above. Used to calculate the time between pulses of the magnet sensor.
+ * Similar to stop watch except it uses double's for seconds.
  *
- *  Created on: May 8, 2014
+ *  Created on: May 11, 2014
  *      Author: jdc9622
  */
 
 #include "Stopwatch.h"
 #include <sys/time.h>
-#include <iomanip>
 #include <stdlib.h>
 
 Stopwatch::Stopwatch() {
-	timeElapsed.min = 0;
 	timeElapsed.sec = 0;
 }
 
@@ -39,42 +37,40 @@ Stopwatch::~Stopwatch() {
 	// TODO Auto-generated destructor stub
 }
 
-int Stopwatch::getTime(){
+double Stopwatch::getTime(){
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
 
-	double measure = tv.tv_sec;
+	long double measure = tv.tv_usec;
+	measure /= 1000000.0;
+	measure += tv.tv_sec;
 
 	return measure;
 }
 
 void Stopwatch::start(){
 	startTime = getTime();
+	running = true;
 }
 
 TIME Stopwatch::stop(){
+	running = false;
 	return getTimeElapsed();
 }
 
+bool Stopwatch::isRunning(){
+	return running;
+}
+
 TIME Stopwatch::getTimeElapsed(){
-	int tempTime = getTime();
-	int tempElapsed = tempTime - startTime;
+	double tempTime = getTime();
+	double tempElapsed = tempTime - startTime;
 
-	div_t result = std::div(tempElapsed, 60);
-
-	timeElapsed.min = timeElapsed.min + result.quot;
-	timeElapsed.sec = timeElapsed.sec + result.rem;
-
-	if(timeElapsed.sec >= 60){
-		div_t miniResult = std::div(timeElapsed.sec, 60);
-		timeElapsed.min = timeElapsed.min + miniResult.quot;
-		timeElapsed.sec = timeElapsed.sec + miniResult.rem;
-	}
+	timeElapsed.sec = tempElapsed;
 
 	return timeElapsed;
 }
 
 void Stopwatch::reset(){
-	timeElapsed.min = 0;
 	timeElapsed.sec = 0;
 }
