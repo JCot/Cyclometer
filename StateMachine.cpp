@@ -56,22 +56,20 @@ void* StateMachine::runProcess(void){
 }
 
 
-StateMachine::StateMachine(EventQueue* queue, Motor* m) {
+StateMachine::StateMachine(EventQueue* queue, Calculations* myCalc) {
 	// TODO Auto-generated constructor stub
     this -> done  = false;
     this -> myQueue = queue;
-    this -> current_state = STATE_CLOSEDDOOR;
-    this -> last_state = STATE_CLOSEDDOOR;
-    
-    this -> myMotor =  m;
+    this -> current_state = STATE_FULLRESET;
+    this -> last_state = STATE_FULLRESET;
     
     //create states
-    this->s0 = Closed();
-    this->s1 = Closing();
-    this->s2 = Open();
-    this->s3 = Opening();
-    this->s4 = IdleClosing();
-    this->s5 = IdleOpening();
+    this->s0 = FullResetState(myCalc);
+    this->s1 = SetUnitState(myCalc);
+    this->s2 = SetTireState(myCalc);
+    this->s3 = ShowDistanceState(myCalc);
+    this->s4 = ShowSpeedState(myCalc);
+    this->s5 = ShowTimeState(myCalc);
     
     //Set motor for motor dependent states
     s1.setMotor(m);

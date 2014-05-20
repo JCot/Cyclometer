@@ -9,13 +9,13 @@
 #define STATEMACHINE_H_
 
 #include "EventQueue.h"
-#include "Closed.h"
-#include "Closing.h"
-#include "IdleClosing.h"
-#include "Open.h"
-#include "Opening.h"
-#include "IdleOpening.h"
-#include "Motor.h"
+#include "FullResetstate.h"
+#include "SetUnitState.h"
+#include "SetTireState.h"
+#include "ShowDistanceState.h"
+#include "ShowSpeedState.h"
+#include "ShowTimeState.h"
+#include "Calculations.h"
 #include <pthread.h>
 
 
@@ -28,14 +28,16 @@ private:
     bool done;
     int current_state;
     int last_state;
+
     EventQueue* myQueue;
-    Motor* myMotor;
-    Closed s0;
-    Closing s1;
-    Open s2;
-    Opening s3;
-    IdleClosing s4;
-    IdleOpening s5;
+
+    FullResetState s0;
+    SetUnitState s1;
+    SetTireState s2;
+    ShowDistanceState s3;
+    ShowSpeedState s4;
+    ShowTimeState s5;
+
     State *states[NUM_STATES];
     
     
