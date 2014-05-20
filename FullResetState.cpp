@@ -30,6 +30,8 @@ void FullResetState::onExit(){
 // TODO reimplement this function to work
 int FullResetState::transition(int event_id){
 
+	return STATE_SETUNITS;
+
 	switch( event_id ){
 
 	case EVENT_SET:

@@ -31,8 +31,8 @@ int ShowDistanceState::transition(int event_id){
 	switch( event_id ){
 
 	case EVENT_SET:
-		toggleAutoMode();
-		return STATE_SHOWDISTANCE;
+		calc->setState(STATE_SETTIRE);
+		return STATE_SETTIRE;
 		break;
 	case EVENT_FASTMODE:
 	case EVENT_MODE:

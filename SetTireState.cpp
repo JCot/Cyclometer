@@ -41,8 +41,8 @@ int SetTireState::transition(int event_id){
 
 	case EVENT_SET:
 		if( systemReset ){
-			return STATE_SHOWSPEED;
 			systemReset = false;
+			return STATE_SHOWSPEED;
 		}
 		else{
 			return STATE_SHOWDISTANCE;
