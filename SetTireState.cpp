@@ -20,7 +20,7 @@ SetTireState::SetTireState(Display* myDisplay){
 
 void SetTireState::onEntry(){
     printf("Entering Set Tire State State\n");
-    printf("Current wheel diameter %d", wheelCirc);
+    printf("Current wheel diameter %d\n", wheelCirc);
     display->displayWheelCirc(wheelCirc);
 
 }

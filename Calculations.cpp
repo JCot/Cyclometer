@@ -54,7 +54,7 @@ void Calculations::calcCurrentSpeed(int wheelCirc, TIME timePassed){
 	//For testing purposes. Remove before turning in
 //	cout << "Current Speed: " << currentSpeed << "\n";
 
-	if(tempTime < 7.92){
+	if(tempTime < 4.0){
 		speeds.push_back(currentSpeed);
 	}
 }

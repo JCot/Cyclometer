@@ -60,6 +60,7 @@ int ShowSpeedState::transition(int event_id){
 }
 
 void ShowSpeedState::toggleAutoMode(){
+	printf("Switching between auto and manual mode\n");
 
 	calc->toggleMode();
 

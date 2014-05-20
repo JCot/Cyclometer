@@ -58,6 +58,7 @@ int ShowTimeState::transition(int event_id){
 }
 
 void ShowTimeState::toggleAutoMode(){
+	printf("Switching between auto and manual mode\n");
 
 	calc->toggleMode();
 

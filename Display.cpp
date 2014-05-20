@@ -158,7 +158,7 @@ void Display::displaySpeeds(double currentSpeed, double averageSpeed){
 	bool csDecimal = false;
 	bool asDecimal = false;
 
-	if(currentSpeed >= 10){
+	if(currentSpeed >= 10 && currentSpeed <= 99){
 		firstDigit = (int)(currentSpeed/10);
 		secondDigit = ((int)currentSpeed % 10);
 		csDecimal = false;
