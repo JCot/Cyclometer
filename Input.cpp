@@ -57,6 +57,25 @@ void* Input::runProcess(void* args){
 	       Icurrent = in8(ctrlIBHandle );
 
 
+	       if(Icurrent & RESET_MASK){ //raise reset event
+	    	   modeCount = 0;
+	    	   tripCount = 0;
+	    	   if( resetCount++ > 2){
+	    		   resetCount = 0;
+	    		   sendCMD('r');
+	    	   }
+	    	   sleep (1);
+	       }
+	       if(Icurrent & TRIP_MASK){ //raise trip event
+	    	   modeCount = 0;
+	    	   resetCount = 0;
+	    	   if( tripCount++ > 2){
+	    		   tripCount = 0;
+	    		   sendCMD('t');
+	    	   }
+	    	   sleep (1);
+	       }
+
 	       if( Icurrent & SET_MASK){ //raise SET event
 	    	   modeCount = 0;
 	    	   tripCount = 0;
@@ -76,27 +95,10 @@ void* Input::runProcess(void* args){
 	    	   }
 	    	   sleep (1);
 	       }
-	       if(Icurrent & TRIP_MASK){ //raise trip event
-	    	   modeCount = 0;
-	    	   resetCount = 0;
-	    	   if( tripCount++ > 2){
-	    		   tripCount = 0;
-	    		   sendCMD('t');
-	    	   }
-	    	   sleep (1);
-	       }
+
 	       if(Icurrent & START_STOP_MASK){ //raise start stop event
 
 	    	   sendCMD('x');
-	    	   sleep (1);
-	       }
-	       if(Icurrent & RESET_MASK){ //raise reset event
-	    	   modeCount = 0;
-	    	   tripCount = 0;
-	    	   if( resetCount++ > 2){
-	    		   resetCount = 0;
-	    		   sendCMD('r');
-	    	   }
 	    	   sleep (1);
 	       }
 	    }

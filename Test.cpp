@@ -108,7 +108,7 @@ int main(int argc, char *argv[]){
 	Display display = Display();
 	Calculations calc = Calculations(&display);
 	MagnetSensor* sensor = new MagnetSensor(&calc);
-	Keyboard keys = Keyboard(&myQueue, useTheHardware);
+	Input input = Input(&myQueue);
     StateMachine rageAgainst = StateMachine(&myQueue, &calc, &display);
 
     pthread_attr_t attr;
