@@ -18,9 +18,9 @@
 
 #define SET_MASK 0x08
 #define MODE_MASK 0x02
-#define TRIP_MASK 0x0a
+#define TRIP_MASK 0x0A
 #define START_STOP_MASK 0x20
-#define RESET_MASK 0x2a
+#define RESET_MASK 0x2A
 
 uintptr_t ctrlIBHandle;
 
@@ -56,35 +56,27 @@ void* Input::runProcess(void* args){
 
 	       Icurrent = in8(ctrlIBHandle );
 
+	       bool modePressed = Icurrent & MODE_MASK;
+	       bool setPressed = Icurrent & SET_MASK;
+	       bool startStopPressed = Icurrent & START_STOP_MASK;
 
-	       if(Icurrent & RESET_MASK){ //raise reset event
+	       if( modePressed && setPressed && startStopPressed){
 	    	   modeCount = 0;
 	    	   tripCount = 0;
 	    	   if( resetCount++ > 2){
 	    		   resetCount = 0;
 	    		   sendCMD('r');
 	    	   }
-	    	   sleep (1);
 	       }
-	       if(Icurrent & TRIP_MASK){ //raise trip event
+	       else if( modePressed && setPressed){
 	    	   modeCount = 0;
 	    	   resetCount = 0;
 	    	   if( tripCount++ > 2){
 	    		   tripCount = 0;
 	    		   sendCMD('t');
 	    	   }
-	    	   sleep (1);
 	       }
-
-	       if( Icurrent & SET_MASK){ //raise SET event
-	    	   modeCount = 0;
-	    	   tripCount = 0;
-	    	   resetCount = 0;
-
-	    	   sendCMD('s');
-	    	   sleep (1);
-	       }
-	       if( Icurrent & MODE_MASK){ //raise MODE or FAST_MODE evevnt
+	       else if ( modePressed){
 	    	   tripCount = 0;
 	    	   resetCount = 0;
 	    	   if( modeCount++ > 2 ){
@@ -93,14 +85,68 @@ void* Input::runProcess(void* args){
 	    	   else{
 	    		   sendCMD('m');
 	    	   }
-	    	   sleep (1);
+	       }
+	       else if ( setPressed){
+	    	   modeCount = 0;
+	    	   tripCount = 0;
+	    	   resetCount = 0;
+
+	    	   sendCMD('s');
+	       }
+	       else if(startStopPressed){
+	    	   sendCMD('x');
+	       }else{
+
+	       }
+
+	       /*
+	       if(Icurrent & RESET_MASK){ //raise reset event
+	    	   modeCount = 0;
+	    	   tripCount = 0;
+	    	   if( resetCount++ > 2){
+	    		   resetCount = 0;
+	    		   sendCMD('r');
+	    	   }
+//	    	   sleep (1);
+	       }
+	       if(Icurrent & TRIP_MASK){ //raise trip event
+	    	   modeCount = 0;
+	    	   resetCount = 0;
+	    	   if( tripCount++ > 2){
+	    		   tripCount = 0;
+	    		   sendCMD('t');
+	    	   }
+//	    	   sleep (1);
+	       }
+
+	       if( Icurrent & SET_MASK){ //raise SET event
+	    	   modeCount = 0;
+	    	   tripCount = 0;
+	    	   resetCount = 0;
+
+	    	   sendCMD('s');
+//	    	   sleep (1);
+	       }
+	       if( Icurrent & MODE_MASK){ //raise MODE or FAST_MODE event
+	    	   tripCount = 0;
+	    	   resetCount = 0;
+	    	   if( modeCount++ > 2 ){
+	    		   sendCMD('f');
+	    	   }
+	    	   else{
+	    		   sendCMD('m');
+	    	   }
+//	    	   sleep (1);
 	       }
 
 	       if(Icurrent & START_STOP_MASK){ //raise start stop event
 
 	    	   sendCMD('x');
-	    	   sleep (1);
+//	    	   sleep (1);
 	       }
+			*/
+	       sleep (1);
+
 	    }
 	    return EXIT_SUCCESS;
 }
