@@ -74,3 +74,20 @@ TIME Stopwatch::getTimeElapsed(){
 void Stopwatch::reset(){
 	timeElapsed.sec = 0;
 }
+
+TIME Stopwatch::updateTime(){
+
+	double currTime;
+	if( running ){
+		currTime = getTime();
+		double tempElapsed = currTime - startTime;
+
+		timeElapsed.sec = timeElapsed.sec + (tempElapsed - timeElapsed.sec);
+
+		return timeElapsed;
+	}
+	else{
+		startTime = getTime();
+		return timeElapsed;
+	}
+}

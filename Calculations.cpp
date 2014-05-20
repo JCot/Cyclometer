@@ -108,7 +108,6 @@ TIME Calculations::getTime(){
 	if(time.sec >= 1){
 		div_t result = std::div(time.sec, 60);
 
-		tripTime.min += result.quot;
 		tripTime.sec = result.rem;
 	}
 
@@ -141,7 +140,7 @@ void Calculations::runCalculations(int wheelCirc, TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
 
 	if((mode == AUTO && timePassed.sec < 7.92) ||
-			(mode == MANUAL && doCalculations)){
+			(mode == MANUAL && doTripCalculations)){
 		calcAverageSpeed();
 		calcTripDistance(wheelCirc);
 

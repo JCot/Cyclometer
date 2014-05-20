@@ -9,7 +9,7 @@
 
 int units = METRIC;
 int mode = MANUAL;
-bool doCalculations = false;
+bool doTripCalculations = false;
 int wheelCirc = 220;
 
 //Yes this is a terrible place for these variables but it doesn't work

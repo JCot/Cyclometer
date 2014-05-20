@@ -22,6 +22,7 @@ public:
 	void reset();
 	TIME getTimeElapsed();
 	bool isRunning();
+	TIME updateTime();
 
 private:
 	double startTime;
