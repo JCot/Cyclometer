@@ -13,11 +13,11 @@
 
 using namespace std;
 
-Calculations::Calculations() {
+Calculations::Calculations(Display* myDisplay) {
 	currentSpeed = 0.0;
 	averageSpeed = 0.0;
 	tripDistance = 0.0;
-	display = Display();
+	this->display = myDisplay;
 	tripTime.min = 0.0;
 	tripTime.sec = 0.0;
 //	startTripTimer();
@@ -121,9 +121,14 @@ void Calculations::resetTrip(){
 	speeds.clear();
 	tripTime.min = 0.0;
 	tripTime.sec = 0.0;
-	rawTime.min = 0.0;
-	rawTime.sec = 0.0;
 	stopwatch.reset();
+}
+
+void Calculations::fullReset(){
+	resetTrip();
+	mode = MANUAL;
+	doCalculations = false;
+	setState(STATE_FULLRESET);
 }
 
 void Calculations::toggleMode(){
@@ -136,11 +141,21 @@ void Calculations::toggleMode(){
 	}
 }
 
+void Calculations::toggleCalcs(){
+	if(mode != AUTO){
+		doCalculations = !doCalculations;
+	}
+}
+
+void Calculations::setState(int myState){
+	state = myState;
+}
+
 void Calculations::runCalculations(int wheelCirc, TIME timePassed){
 	calcCurrentSpeed(wheelCirc, timePassed);
 
 	if((mode == AUTO && timePassed.sec < 7.92) ||
-			(mode == MANUAL && doTripCalculations)){
+			(mode == MANUAL && doCalculations)){
 		calcAverageSpeed();
 		calcTripDistance(wheelCirc);
 
@@ -159,34 +174,41 @@ void Calculations::runCalculations(int wheelCirc, TIME timePassed){
 }
 
 void Calculations::updateDisplay(){
-	string state = "Time"; //Temporary variable until state machine implemented
 
 	if(units == METRIC){
-		if(state.compare("Speed") == 0){
-			display.displaySpeeds(currentSpeed, averageSpeed);
-		}
 
-		else if(state.compare("Time") == 0){
-			display.displayTime(getTime());
-		}
+		switch(state){
 
-		else if(state.compare("Distance") == 0){
-			display.displayDistance(roundTenth(tripDistance));
+		case STATE_SHOWSPEED:
+			display->displaySpeeds(currentSpeed, averageSpeed);
+			break;
+		case STATE_SHOWDISTANCE:
+			display->displayDistance(roundTenth(tripDistance));
+			break;
+		case STATE_SHOWTIME:
+			display->displayTime(getTime());
+			break;
+		default:
+			break;
 		}
 	}
 
 	else if(units == ENGLISH){
-		if(state.compare("Speed") == 0){
-			display.displaySpeeds(roundTenth(currentSpeed * UNIT_CONVERSION_FACTOR),
+
+		switch(state){
+
+		case STATE_SHOWSPEED:
+			display->displaySpeeds(roundTenth(currentSpeed * UNIT_CONVERSION_FACTOR),
 					roundTenth(averageSpeed * UNIT_CONVERSION_FACTOR));
-		}
-
-		else if(state.compare("Time") == 0){
-			display.displayTime(getTime());
-		}
-
-		else if(state.compare("Distance") == 0){
-			display.displayDistance(roundTenth(tripDistance * UNIT_CONVERSION_FACTOR));
+			break;
+		case STATE_SHOWDISTANCE:
+			display->displayDistance(roundTenth(tripDistance * UNIT_CONVERSION_FACTOR));
+			break;
+		case STATE_SHOWTIME:
+			display->displayTime(getTime());
+			break;
+		default:
+			break;
 		}
 	}
 }

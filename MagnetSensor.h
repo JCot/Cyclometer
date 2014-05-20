@@ -16,7 +16,7 @@
 
 class MagnetSensor {
 public:
-	MagnetSensor();
+	MagnetSensor(Calculations* myCalcs);
 	virtual ~MagnetSensor();
 	void* pulseDetected();
 	void watchSensor();
@@ -28,7 +28,7 @@ private:
 	bool firstPulse;
 	Stopwatch timer;
 	TIME timeBetweenPulses;
-	Calculations calcs;
+	Calculations* calcs;
 	pthread_t pulseThread;
 };
 

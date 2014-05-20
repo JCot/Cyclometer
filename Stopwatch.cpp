@@ -31,6 +31,8 @@ included in all copies or substantial portions of the Software.
 
 Stopwatch::Stopwatch() {
 	timeElapsed.sec = 0;
+	prevTimeElapsed = 0;
+//	running = false;
 }
 
 Stopwatch::~Stopwatch() {
@@ -55,6 +57,8 @@ void Stopwatch::start(){
 
 TIME Stopwatch::stop(){
 	running = false;
+	endTime = getTime();
+	prevTimeElapsed = getTimeElapsed().sec;
 	return getTimeElapsed();
 }
 
@@ -63,31 +67,23 @@ bool Stopwatch::isRunning(){
 }
 
 TIME Stopwatch::getTimeElapsed(){
-	double tempTime = getTime();
-	double tempElapsed = tempTime - startTime;
 
-	timeElapsed.sec = tempElapsed;
+	if(running){
+		double tempTime = getTime();
+
+		timeElapsed.sec = (tempTime - startTime) + prevTimeElapsed;
+	}
+
+	else{
+		timeElapsed.sec = (endTime - startTime);
+	}
 
 	return timeElapsed;
 }
 
 void Stopwatch::reset(){
 	timeElapsed.sec = 0;
-}
-
-TIME Stopwatch::updateTime(){
-
-	double currTime;
-	if( running ){
-		currTime = getTime();
-		double tempElapsed = currTime - startTime;
-
-		timeElapsed.sec = timeElapsed.sec + (tempElapsed - timeElapsed.sec);
-
-		return timeElapsed;
-	}
-	else{
-		startTime = getTime();
-		return timeElapsed;
-	}
+	startTime = getTime();
+	endTime = getTime();
+	prevTimeElapsed = 0;
 }

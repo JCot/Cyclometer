@@ -17,6 +17,7 @@ private:
 	Calculations *calc;
 public:
 	ShowTimeState();
+	ShowTimeState(Calculations* myCalc);
     void onEntry();
     void onReEntry();
     void onExit();

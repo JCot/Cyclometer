@@ -8,6 +8,10 @@
 
 #include "ShowSpeedState.h"
 
+ShowSpeedState::ShowSpeedState(){
+
+}
+
 ShowSpeedState::ShowSpeedState(Calculations* myCalc){
 	this -> calc = myCalc;
 }
@@ -15,6 +19,7 @@ ShowSpeedState::ShowSpeedState(Calculations* myCalc){
 
 void ShowSpeedState::onEntry(){
     printf("Entering Show Speed State State\n");
+    calc->setState(STATE_SHOWSPEED);
 }
 void ShowSpeedState::onReEntry(){
     NOP();
@@ -56,19 +61,19 @@ int ShowSpeedState::transition(int event_id){
 
 void ShowSpeedState::toggleAutoMode(){
 
-	//calc toggle function call here
+	calc->toggleMode();
 
 }
 
 void ShowSpeedState::tripReset(){
 
-	// calc reset function here
+	calc->resetTrip();
 
 }
 
 void ShowSpeedState::pauseCalc(){
 
-	// calc pause function here
+	calc->toggleCalcs();
 
 }
 

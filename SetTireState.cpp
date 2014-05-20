@@ -6,19 +6,28 @@
  */
 
 #include "SetTireState.h"
+#include "global.h"
 
-SetTireState::SetTireState(Calculations* myCalc){
-	systemReset = true;
-	tireSize = 190;
-	this -> calc = myCalc;
+SetTireState::SetTireState(){
+	NOP();
 }
 
+SetTireState::SetTireState(Display* myDisplay){
+	systemReset = true;
+	wheelCirc = 190;
+	this -> display = myDisplay;
+}
 
 void SetTireState::onEntry(){
     printf("Entering Set Tire State State\n");
+    printf("Current wheel diameter %d", wheelCirc);
+    display->displayWheelCirc(wheelCirc);
+
 }
+
 void SetTireState::onReEntry(){
-    NOP();
+    printf("Current wheel diameter %d\n", wheelCirc);
+    display->displayWheelCirc(wheelCirc);
 }
 void SetTireState::onExit(){
     printf("Leaving Set Tire State State\n");
@@ -67,12 +76,12 @@ int SetTireState::transition(int event_id){
 
 void SetTireState::fullSystemReset(){
 	systemReset = true;
-	tireSize = 190;
+	wheelCirc = 190;
 }
 
 void SetTireState::adjustTireSize( int increment ){
-	tireSize += increment;
-	if( tireSize > 220){
-		tireSize = (tireSize - 221) + 190;
+	wheelCirc += increment;
+	if( wheelCirc > 220){
+		wheelCirc = (wheelCirc - 221) + 190;
 	}
 }

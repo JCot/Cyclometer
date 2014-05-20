@@ -7,6 +7,9 @@
 
 #include "ShowDistanceState.h"
 
+ShowDistanceState::ShowDistanceState(){
+}
+
 ShowDistanceState::ShowDistanceState(Calculations* myCalc){
 	this -> calc = myCalc;
 }
@@ -14,6 +17,7 @@ ShowDistanceState::ShowDistanceState(Calculations* myCalc){
 
 void ShowDistanceState::onEntry(){
     printf("Entering Show Distance State State\n");
+    calc->setState(STATE_SHOWDISTANCE);
 }
 void ShowDistanceState::onReEntry(){
     NOP();
@@ -28,22 +32,22 @@ int ShowDistanceState::transition(int event_id){
 
 	case EVENT_SET:
 		toggleAutoMode();
-		return STATE_SHOWTIME;
+		return STATE_SHOWDISTANCE;
 		break;
 	case EVENT_FASTMODE:
 	case EVENT_MODE:
-		return STATE_SHOWSPEED;
+		return STATE_SHOWTIME;
 		break;
 	case EVENT_TRIPRESET:
 		tripReset();
-		return STATE_SHOWTIME;
+		return STATE_SHOWDISTANCE;
 		break;
 	case EVENT_RESET:
 		return STATE_FULLRESET;
 		break;
 	case EVENT_STARTSTOP:
 		pauseCalc();
-		return STATE_SHOWTIME;
+		return STATE_SHOWDISTANCE;
 		break;
 	default:
 		std::printf( "ERROR: no event definition for FullReset code:%d\n", event_id);
@@ -55,18 +59,18 @@ int ShowDistanceState::transition(int event_id){
 
 void ShowDistanceState::toggleAutoMode(){
 
-	// calc reset function here
+	calc->toggleMode();
 
 }
 
 void ShowDistanceState::tripReset(){
 
-	// calc pause function here
+	calc->resetTrip();
 
 }
 
 void ShowDistanceState::pauseCalc(){
 
-	// calc pause function here
+	calc->toggleCalcs();
 
 }

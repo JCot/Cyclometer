@@ -11,15 +11,17 @@
 #include <iostream>
 #include "State.h"
 #include "Calculations.h"
+#include "Display.h"
 
 class SetTireState : public State{
 private:
 	bool systemReset;
 	int tireSize;
-    Calculations *calc;
+    Display* display;
 
 public:
-	SetTireState();
+    SetTireState();
+	SetTireState(Display* myDisplay);
     void onEntry();
     void onReEntry();
     void onExit();

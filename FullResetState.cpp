@@ -6,6 +6,11 @@
  */
 
 #include "FullResetState.h"
+#include "global.h"
+
+FullResetState::FullResetState(){
+	NOP();
+}
 
 FullResetState::FullResetState(Calculations* myCalc){
 	this -> calc = myCalc;
@@ -19,6 +24,8 @@ void FullResetState::onReEntry(){
 }
 void FullResetState::onExit(){
     printf("Leaving Full Reset State State\n");
+    calc->fullReset();
+
 }
 // TODO reimplement this function to work
 int FullResetState::transition(int event_id){

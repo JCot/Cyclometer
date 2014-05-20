@@ -17,6 +17,7 @@ private:
 	Calculations *calc;
 public:
 	FullResetState();
+	FullResetState(Calculations* myCalc);
     void onEntry();
     void onReEntry();
     void onExit();

@@ -50,7 +50,6 @@ const static int ANODE_THREE = 0xF7;
 
 extern int units;
 extern int mode;
-extern bool doTripCalculations;
 extern int wheelCirc;
 
 extern int firstDigit;

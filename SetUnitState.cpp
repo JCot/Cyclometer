@@ -6,20 +6,43 @@
  */
 
 #include "SetUnitState.h"
+#include "global.h"
 
-SetUnitState::SetUnitState(Calculations* myCalc){
+SetUnitState::SetUnitState(){
+	NOP();
+}
+
+
+SetUnitState::SetUnitState(Display* myDisplay){
 	useKilometers = true;
-	this -> calc = myCalc;
+	this -> display = myDisplay;
 }
 
 
 void SetUnitState::onEntry(){
     printf("Entering Set Unit State State\n");
-    useKilomteres = true;
+    if( useKilometers ){
+    	printf( "Currently using metric units\n");
+    	units = METRIC;
+    }else{
+    	printf("Currently using imperial units\n");
+    	units = ENGLISH;
+    }
+
+    display->displayUnits(useKilometers);
 }
 void SetUnitState::onReEntry(){
 	printf("Switching between kilometers and miles\n");
 	useKilometers = !useKilometers;
+    if( useKilometers ){
+    	printf( "Currently using metric units\n");
+    	units = METRIC;
+    }else{
+    	printf("Currently using imperial units\n");
+    	units = ENGLISH;
+    }
+
+    display->displayUnits(useKilometers);
 }
 void SetUnitState::onExit(){
     printf("Leaving Set Unit State State\n");

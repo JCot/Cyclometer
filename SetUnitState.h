@@ -15,10 +15,11 @@
 class SetUnitState : public State{
 private:
 	bool useKilometers;
-    Calculations *calc;
+    Display* display;
 
 public:
-	SetUnitState();
+    SetUnitState();
+	SetUnitState(Display* myDisplay);
     void onEntry();
     void onReEntry();
     void onExit();

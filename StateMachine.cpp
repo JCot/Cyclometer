@@ -56,7 +56,7 @@ void* StateMachine::runProcess(void){
 }
 
 
-StateMachine::StateMachine(EventQueue* queue, Calculations* myCalc) {
+StateMachine::StateMachine(EventQueue* queue, Calculations* myCalc, Display* myDisplay) {
 	// TODO Auto-generated constructor stub
     this -> done  = false;
     this -> myQueue = queue;
@@ -65,16 +65,14 @@ StateMachine::StateMachine(EventQueue* queue, Calculations* myCalc) {
     
     //create states
     this->s0 = FullResetState(myCalc);
-    this->s1 = SetUnitState(myCalc);
-    this->s2 = SetTireState(myCalc);
+    this->s1 = SetUnitState(myDisplay);
+    this->s2 = SetTireState(myDisplay);
     this->s3 = ShowDistanceState(myCalc);
     this->s4 = ShowSpeedState(myCalc);
     this->s5 = ShowTimeState(myCalc);
     
-    //Set motor for motor dependent states
-    s1.setMotor(m);
-    s3.setMotor(m);
-
+    this -> calc = myCalc;
+    this -> display = myDisplay;
     
     //assign states into state vector
     states[0] = &s0;

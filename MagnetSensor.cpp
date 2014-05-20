@@ -21,10 +21,10 @@ static void sigintHandler(int sig){
 	//TODO
 }
 
-MagnetSensor::MagnetSensor() {
+MagnetSensor::MagnetSensor(Calculations* myCalcs) {
 	timer = Stopwatch();
 	firstPulse = true;
-	calcs = Calculations();
+	this->calcs = myCalcs;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
@@ -65,7 +65,7 @@ void* MagnetSensor::pulseDetected(){
 		timeBetweenPulses = timer.stop();
 		timer.start();
 
-		calcs.runCalculations(wheelCirc, timeBetweenPulses);
+		calcs->runCalculations(wheelCirc, timeBetweenPulses);
 
 	}
 

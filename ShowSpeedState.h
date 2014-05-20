@@ -17,6 +17,7 @@ class ShowSpeedState : public State{
 private:
     Calculations *calc;
 public:
+    ShowSpeedState();
 	ShowSpeedState( Calculations* calc);
     void onEntry();
     void onReEntry();

@@ -16,6 +16,7 @@
 #include "ShowSpeedState.h"
 #include "ShowTimeState.h"
 #include "Calculations.h"
+#include "Display.h"
 #include <pthread.h>
 
 
@@ -31,6 +32,9 @@ private:
 
     EventQueue* myQueue;
 
+    Calculations* calc;
+    Display* display;
+
     FullResetState s0;
     SetUnitState s1;
     SetTireState s2;
@@ -44,7 +48,7 @@ private:
 
 public:
     void* runProcess(void);
-	StateMachine(EventQueue* queue, Motor* m);
+	StateMachine(EventQueue* queue, Calculations* myCalc, Display* myDisplay);
 	virtual ~StateMachine();
 };
 

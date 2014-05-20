@@ -62,20 +62,6 @@ Display::Display() {
 
 	out8(directionHandle, 0x02);
 
-	out8(portCHandle, ANODE_THREE);
-	out8(portAHandle, NOTHING);
-	out8(portCHandle, ANODE_TWO);
-	out8(portAHandle, NOTHING);
-	out8(portCHandle, ANODE_ONE);
-	out8(portAHandle, NOTHING);
-	out8(portCHandle, ANODE_ZERO);
-	out8(portAHandle, NOTHING);
-
-	firstDigitSignals = NOTHING;
-	secondDigitSignals = NOTHING;
-	thirdDigitSignals = NOTHING;
-	fourthDigitSignals = ONE_NO_DECIMAL;
-
 	pthread_attr_t attr;
 
 	pthread_attr_init(&attr);
@@ -323,7 +309,7 @@ void Display::displayTime(TIME time){
 //	updateDisplayHelper();
 }
 
-void Display::displayWheelCirc(){
+void Display::displayWheelCirc(int wheelCirc){
 	firstDigit = NOTHING;
 	secondDigit = (int)(wheelCirc/100);
 	thirdDigit = ((int)(wheelCirc/10)) % 10;
@@ -333,6 +319,22 @@ void Display::displayWheelCirc(){
 	getDigitSignals(secondDigit, secondSignalsPointer, false);
 	getDigitSignals(thirdDigit, thirdSignalsPointer, false);
 	getDigitSignals(fourthDigit, fourthSignalsPointer, false);
+}
+
+void Display::displayUnits(bool usingMetric){
+	if(usingMetric){
+		firstDigitSignals = NOTHING;
+		secondDigitSignals = NOTHING;
+		thirdDigitSignals = NOTHING;
+		fourthDigitSignals = ONE_NO_DECIMAL;
+	}
+
+	else{
+		firstDigitSignals = NOTHING;
+		secondDigitSignals = NOTHING;
+		thirdDigitSignals = NOTHING;
+		fourthDigitSignals = TWO_NO_DECIMAL;
+	}
 }
 
 void* Display::updateDisplay(){

@@ -12,16 +12,19 @@
 #include <vector>
 #include "Stopwatch.h"
 #include "Display.h"
+#include "State.h"
 
 class Calculations {
 public:
-	Calculations();
+	Calculations(Display* myDisplay);
 	virtual ~Calculations();
 	void startTripTimer();
 	void stopTripTimer();
 	TIME getTime();
 	void resetTrip();
 	void runCalculations(int wheelCirc, TIME timePassed);
+	void setState(int myState);
+	void fullReset();
 
 	//Move to private once testing complete
 	void calcCurrentSpeed(int wheelCirc, TIME timePassed);
@@ -29,6 +32,7 @@ public:
 	void calcTripDistance(int wheelCirc);
 	void updateDisplay();
 	void toggleMode();
+	void toggleCalcs();
 
 private:
 	double roundWhole(double num);
@@ -38,10 +42,11 @@ private:
 	double currentSpeed;
 	double averageSpeed;
 	double tripDistance;
-	Display display;
+	Display* display;
 	TIME tripTime;
-	TIME rawTime;
 	std::vector<double> speeds;
+	int state;
+	bool doCalculations;
 };
 
 #endif /* CALCULATIONS_H_ */

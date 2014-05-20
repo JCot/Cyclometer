@@ -7,6 +7,8 @@
 
 #include "ShowTimeState.h"
 
+ShowTimeState::ShowTimeState(){
+}
 
 ShowTimeState::ShowTimeState(Calculations* myCalc){
 	this -> calc = myCalc;
@@ -15,6 +17,7 @@ ShowTimeState::ShowTimeState(Calculations* myCalc){
 
 void ShowTimeState::onEntry(){
     printf("Entering Show Time State State\n");
+    calc->setState(STATE_SHOWTIME);
 }
 void ShowTimeState::onReEntry(){
     NOP();
@@ -56,18 +59,18 @@ int ShowTimeState::transition(int event_id){
 
 void ShowTimeState::toggleAutoMode(){
 
-	//calc toggle function call here
+	calc->toggleMode();
 
 }
 
 void ShowTimeState::tripReset(){
 
-	// calc reset function here
+	calc->resetTrip();
 
 }
 
 void ShowTimeState::pauseCalc(){
 
-	// calc pause function here
+	calc->toggleCalcs();
 
 }

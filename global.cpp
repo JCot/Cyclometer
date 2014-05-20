@@ -9,8 +9,7 @@
 
 int units = METRIC;
 int mode = MANUAL;
-bool doTripCalculations = false;
-int wheelCirc = 220;
+int wheelCirc = 0;
 
 //Yes this is a terrible place for these variables but it doesn't work
 //for them to be defined in Display.h Or at least we don't
